@@ -16,6 +16,10 @@ const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
 
+const authentication = require('./authentication');
+
+const sequelize = require('./sequelize');
+
 const app = express(feathers());
 
 // Load app configuration
@@ -35,8 +39,11 @@ app.use('/admin', express.static(app.get('admin')));
 app.configure(express.rest());
 app.configure(socketio());
 
+app.configure(sequelize);
+
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
+app.configure(authentication);
 // Set up our services (see `services/index.js`)
 app.configure(services);
 // Set up event channels (see channels.js)

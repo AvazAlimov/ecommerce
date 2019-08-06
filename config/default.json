@@ -6,5 +6,30 @@
   "paginate": {
     "default": 10,
     "max": 50
-  }
+  },
+  "authentication": {
+    "secret": "0027e59edfd2311b0b190814a43fc644124eb0cb89c0548c76c70a3545d71d85284b65d50d536e6bc9f594021edba9355428241f7cd1e74b3c9b4062828e5391583a402401c0fa3ecfcc586374d57c4a1da4e5508d726e024368e4c74ee121796af80a7701fe553d3878a216be88537de227c297ec27dd9a9f04184f9574a5daa1d2e2680228acd82416c36354806e079dcd6f8a029701b523defeaba18e00c6316d64fd7ddbfb3f8532303a6fa40084d5c35037c0b510b81f729dfcf86b1ec4f903832c3aed2aae11773d4d80e792c21224292b6b9a802e8b6f88674f418d1c890a7cc05970c41987663d1b192f05ef1a95991a3e68842878dad299d45ca9b1",
+    "strategies": [
+      "jwt",
+      "local"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "entity": "user",
+      "usernameField": "email",
+      "passwordField": "password"
+    }
+  },
+  "postgres": "postgres://root:@localhost:5432/ecommerce"
 }
