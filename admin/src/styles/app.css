@@ -1,0 +1,6 @@
+.border {
+    border: 1px solid rgba(112, 112, 112, 0.12);
+}
+.radius {
+    border-radius: 4px;
+}
