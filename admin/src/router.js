@@ -10,5 +10,11 @@ export default new Router({
       name: 'login',
       component: () => import('./views/Login.vue'),
     },
+    {
+      meta: { requiresAuth: true },
+      path: '/',
+      name: 'home',
+      component: () => import('./views/Home.vue'),
+    },
   ],
 });

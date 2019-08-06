@@ -8,10 +8,10 @@
               .headline.mb-5.text-center Авторизация
 
               v-text-field(
-                v-model="payload.username"
+                v-model="payload.email"
                 label="Имя пользователя"
                 outlined
-                name="username"
+                name="email"
                 v-validate="'required'"
                 autocomplete="username")
 
@@ -26,18 +26,43 @@
                 v-validate="'required'"
                 autocomplete="current-password")
 
-              v-btn(block outlined large :disabled="errors.items.length > 0") Войти в систему
+              v-btn(
+                block outlined large
+                :disabled="errors.items.length > 0"
+                :loading="loading"
+                @click="signin()"
+              ) Войти в систему
 </template>
 
 <script>
 export default {
   name: 'Login',
   data: () => ({
+    loading: false,
     show: false,
     payload: {
-      username: '',
+      strategy: 'local',
+      email: '',
       password: '',
     },
+    error: null,
   }),
+  methods: {
+    signin() {
+      this.error = null;
+      this.loading = true;
+
+      this.$store.dispatch('auth/authenticate', this.payload)
+        .then(() => {
+          this.$router.push({ name: 'home' });
+        })
+        .catch((error) => {
+          this.error = error.message;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+  },
 };
 </script>

@@ -10,8 +10,13 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@feathersjs/authentication-client": "^1.0.11",
+    "@feathersjs/feathers": "^3.3.1",
+    "@feathersjs/socketio-client": "^1.2.1",
     "core-js": "^2.6.5",
+    "feathers-vuex": "^1.7.0",
     "register-service-worker": "^1.6.2",
+    "socket.io-client": "^2.2.0",
     "vee-validate": "^2.2.13",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",

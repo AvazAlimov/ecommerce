@@ -9,6 +9,17 @@ import './styles/app.css';
 
 Vue.config.productionTip = false;
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    store.dispatch('auth/authenticate')
+      .then(() => next())
+      .catch(() => next({ name: 'login' }));
+  } else {
+    next();
+  }
+});
+
+// eslint-disable-next-line no-new
 new Vue({
   router,
   store,
