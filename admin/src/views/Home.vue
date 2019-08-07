@@ -4,20 +4,22 @@
       v-app-bar-nav-icon(@click.stop="drawer = !drawer")
         v-btn(icon @click.stop="drawer = !drawer")
           v-icon menu
-      v-toolbar-title {{ $route.name }}
+      v-toolbar-title.text-capitalize {{ $route.name }}
       v-spacer
-      v-menu(open-on-hover bottom offset-y)
-        template(v-slot:activator="{ on }")
-          v-btn.text-lowercase(depressed rounded color="primary" v-on="on") {{ user.email }}
-        v-list.py-0
-          v-list-item(@click="logout()")
-            v-list-item-title Logout
+      v-btn.text-lowercase(
+        depressed rounded
+        color="primary" v-on="on"
+        @click="logout()"
+      ) {{ user.email }}
+        v-icon(right) power_settings_new
     v-navigation-drawer(v-model="drawer" app clipped)
       v-list.py-0
         v-list-item(v-for="(item,index) in items" :key="index" :to="item.to")
           v-list-item-action
             v-icon {{ item.icon }}
           v-list-item-title {{ item.text }}
+    v-content
+      v-container(fluid fill-height)
 </template>
 
 <script>
@@ -31,39 +33,39 @@ export default {
       {
         to: { name: 'home' },
         icon: 'data_usage',
-        text: 'Statistics',
+        text: 'Статистика',
       },
       {
         icon: 'inbox',
-        text: 'Categories',
+        text: 'Категории',
       },
       {
         icon: 'favorite',
-        text: 'Brands',
+        text: 'Бренды',
       },
       {
         icon: 'local_offer',
-        text: 'Products',
+        text: 'Товары',
       },
       {
         icon: 'people',
-        text: 'Customers',
+        text: 'Клиенты',
       },
       {
         icon: 'markunread_mailbox',
-        text: 'Orders',
+        text: 'Заказы',
       },
       {
         icon: 'message',
-        text: 'Feedbacks',
+        text: 'Отзыв',
       },
       {
         icon: 'account_balance_wallet',
-        text: 'Prices',
+        text: 'Цены',
       },
       {
         icon: 'settings',
-        text: 'Settings',
+        text: 'Настройки',
       },
     ],
   }),
@@ -72,10 +74,9 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch('auth/logout')
-        .then(() => {
-          this.$router.push({ name: 'login' });
-        });
+      this.$store
+        .dispatch('auth/logout')
+        .then(() => this.$router.push({ name: 'login' }));
     },
   },
 };
