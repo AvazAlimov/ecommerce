@@ -8,7 +8,7 @@
       v-spacer
       v-btn.text-lowercase(
         depressed rounded
-        color="primary" v-on="on"
+        color="primary"
         @click="logout()"
       ) {{ user.email }}
         v-icon(right) power_settings_new
@@ -19,7 +19,8 @@
             v-icon {{ item.icon }}
           v-list-item-title {{ item.text }}
     v-content
-      v-container(fluid fill-height)
+      v-container(fluid)
+        router-view
 </template>
 
 <script>
@@ -36,34 +37,42 @@ export default {
         text: 'Статистика',
       },
       {
+        to: { name: 'categories' },
         icon: 'inbox',
         text: 'Категории',
       },
       {
+        to: { name: 'brands' },
         icon: 'favorite',
         text: 'Бренды',
       },
       {
+        to: { name: 'products' },
         icon: 'local_offer',
         text: 'Товары',
       },
       {
+        to: { name: 'customers' },
         icon: 'people',
         text: 'Клиенты',
       },
       {
+        to: { name: 'orders' },
         icon: 'markunread_mailbox',
         text: 'Заказы',
       },
       {
+        to: { name: 'feedbacks' },
         icon: 'message',
         text: 'Отзыв',
       },
       {
+        to: { name: 'prices' },
         icon: 'account_balance_wallet',
         text: 'Цены',
       },
       {
+        to: { name: 'settings' },
         icon: 'settings',
         text: 'Настройки',
       },
