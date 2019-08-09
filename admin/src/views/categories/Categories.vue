@@ -1,5 +1,5 @@
 <template lang="pug">
-  .title Categories
+  .title {{ $t('categories') }}
 </template>
 
 <script>

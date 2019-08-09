@@ -4,7 +4,7 @@
       v-app-bar-nav-icon(@click.stop="drawer = !drawer")
         v-btn(icon @click.stop="drawer = !drawer")
           v-icon menu
-      v-toolbar-title.text-capitalize {{ $route.name }}
+      v-toolbar-title.text-capitalize {{ $t($route.name) }}
       v-spacer
       v-btn.text-lowercase(
         depressed rounded
@@ -28,56 +28,58 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Home',
-  data: () => ({
-    drawer: true,
-    items: [
-      {
-        to: { name: 'home' },
-        icon: 'data_usage',
-        text: 'Статистика',
-      },
-      {
-        to: { name: 'categories' },
-        icon: 'inbox',
-        text: 'Категории',
-      },
-      {
-        to: { name: 'brands' },
-        icon: 'favorite',
-        text: 'Бренды',
-      },
-      {
-        to: { name: 'products' },
-        icon: 'local_offer',
-        text: 'Товары',
-      },
-      {
-        to: { name: 'customers' },
-        icon: 'people',
-        text: 'Клиенты',
-      },
-      {
-        to: { name: 'orders' },
-        icon: 'markunread_mailbox',
-        text: 'Заказы',
-      },
-      {
-        to: { name: 'feedbacks' },
-        icon: 'message',
-        text: 'Отзыв',
-      },
-      {
-        to: { name: 'prices' },
-        icon: 'account_balance_wallet',
-        text: 'Цены',
-      },
-      {
-        to: { name: 'settings' },
-        icon: 'settings',
-        text: 'Настройки',
-      },
-    ],
-  }),
+  data() {
+    return {
+      drawer: true,
+      items: [
+        {
+          to: { name: 'statistics' },
+          icon: 'data_usage',
+          text: this.$t('statistics'),
+        },
+        {
+          to: { name: 'categories' },
+          icon: 'inbox',
+          text: this.$t('categories'),
+        },
+        {
+          to: { name: 'brands' },
+          icon: 'favorite',
+          text: this.$t('brands'),
+        },
+        {
+          to: { name: 'products' },
+          icon: 'local_offer',
+          text: this.$t('products'),
+        },
+        {
+          to: { name: 'customers' },
+          icon: 'people',
+          text: this.$t('customers'),
+        },
+        {
+          to: { name: 'orders' },
+          icon: 'markunread_mailbox',
+          text: this.$t('orders'),
+        },
+        {
+          to: { name: 'feedbacks' },
+          icon: 'message',
+          text: this.$t('feedbacks'),
+        },
+        {
+          to: { name: 'prices' },
+          icon: 'account_balance_wallet',
+          text: this.$t('prices'),
+        },
+        {
+          to: { name: 'settings' },
+          icon: 'settings',
+          text: this.$t('settings'),
+        },
+      ],
+    };
+  },
   computed: {
     ...mapState('auth', ['user']),
   },
