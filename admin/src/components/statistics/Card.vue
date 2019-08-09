@@ -23,24 +23,16 @@ export default {
   props: {
     title: {
       type: Object,
-      default: () => ({
-        name: 'Title',
-        value: '100%',
-      }),
+      required: true,
+      validator: value => !!value.name && !!value.value,
     },
     positive: {
       type: Object,
-      default: () => ({
-        name: 'Positive',
-        value: '60%',
-      }),
+      validator: value => !!value.name && !!value.value,
     },
     negative: {
       type: Object,
-      default: () => ({
-        name: 'Negative',
-        value: '40%',
-      }),
+      validator: value => !!value.name && !!value.value,
     },
   },
 };
