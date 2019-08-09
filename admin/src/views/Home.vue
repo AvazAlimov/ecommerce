@@ -19,7 +19,7 @@
             v-icon {{ item.icon }}
           v-list-item-title {{ item.text }}
     v-content
-      v-container(fluid)
+      v-container(fluid grid-list-md)
         router-view
 </template>
 

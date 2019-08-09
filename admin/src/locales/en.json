@@ -1,3 +1,11 @@
 {
-  "message": "hello i18n !!"
+  "statistics": "Статистика",
+  "categories": "Categories",
+  "brands": "Brands",
+  "products": "Products",
+  "customers": "Customers",
+  "orders": "Orders",
+  "feedbacks": "Feedbacks",
+  "prices": "Prices",
+  "settings": "Settings"
 }
