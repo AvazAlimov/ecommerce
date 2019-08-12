@@ -1,5 +1,5 @@
 <template lang="pug">
-  .border.pa-4
+  .border.pa-4.radius
     .title(v-if="!$route.params.id") {{ $t('categories.add') }}
     .title(v-if="$route.params.id") {{ $t('categories.edit') }}
     .mb-4

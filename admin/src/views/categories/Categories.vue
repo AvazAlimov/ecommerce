@@ -1,7 +1,8 @@
 <template lang="pug">
   v-layout(row wrap)
     v-flex(xs12 md6 lg4)
-      .border.pa-4
+      .border.pa-4.radius
+        .title.mb-4 Все категории
         v-treeview(
           activatable
           hoverable
