@@ -7,5 +7,7 @@
     "orders": "Заказы",
     "feedbacks": "Отзывы",
     "prices": "Цены",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "categories.add": "Добавление новой категории",
+    "categories.edit": "Редактирование категории"
 }

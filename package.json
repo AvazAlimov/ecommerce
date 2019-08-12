@@ -2,7 +2,7 @@
   "name": "ecommerce",
   "description": "E-commerce made with nodejs and vuejs",
   "version": "0.0.0",
-  "homepage": "",
+  "homepage": "https://avazalimov.me",
   "main": "src",
   "keywords": [
     "feathers"

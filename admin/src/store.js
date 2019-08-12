@@ -11,6 +11,8 @@ Vue.use(FeathersVuex);
 export default new Vuex.Store({
   plugins: [
     service('users', { paginate: true }),
+    service('categories', { paginate: false }),
+    service('languages', { paginate: false }),
     auth({ userService: 'users' }),
   ],
 });
