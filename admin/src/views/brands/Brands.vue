@@ -6,22 +6,23 @@
         :items="brands"
         hide-default-footer)
         template(v-slot:item="{ item }")
-          td.text-center
-            v-avatar(color="white")
-              v-img(v-if="item.logo" :src="item.logo")
-              v-icon(v-else) photo
-          td {{ item.name }}
-          td.text-center
-            v-icon(v-if="item.active" small) check
-            v-icon(v-else small) remove
-          td.text-center {{ item.products || 0 }}
-          td.text-center {{ item.createdAt | moment('YYYY-MM-DD HH:mm') }}
-          td.text-center {{ item.updatedAt | moment('YYYY-MM-DD HH:mm') }}
-          td.text-end
-            v-btn(icon small :to="{ name: 'brands.edit', params: { id: item.id } }")
-              v-icon(small) edit
-            v-btn(icon small color="red" @click="removeBrand(item.id)")
-              v-icon(small) delete
+          tr
+            td.text-center
+              v-avatar(color="white")
+                v-img(v-if="item.logo" :src="item.logo")
+                v-icon(v-else) photo
+            td {{ item.name }}
+            td.text-center
+              v-icon(v-if="item.active" small) check
+              v-icon(v-else small) remove
+            td.text-center {{ item.products || 0 }}
+            td.text-center {{ item.createdAt | moment('YYYY-MM-DD HH:mm') }}
+            td.text-center {{ item.updatedAt | moment('YYYY-MM-DD HH:mm') }}
+            td.text-end
+              v-btn(icon small :to="{ name: 'brands.edit', params: { id: item.id } }")
+                v-icon(small) edit
+              v-btn(icon small color="red" @click="removeBrand(item.id)")
+                v-icon(small) delete
         template(v-slot:footer)
           v-divider
           .text-end.pa-2
