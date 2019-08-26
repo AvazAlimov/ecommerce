@@ -1,8 +1,10 @@
 {
+  "url": "http://localhost:3030/",
   "host": "localhost",
   "port": 3030,
   "public": "../public/",
   "admin": "../admin/dist/",
+  "uploads": "../uploads/",
   "paginate": {
     "default": 10,
     "max": 50

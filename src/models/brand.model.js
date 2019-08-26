@@ -6,9 +6,13 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const brand = sequelizeClient.define('brand', {
-    logo: {
-      type: DataTypes.STRING,
+    logoId: {
+      type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: 'upload',
+        key: 'id',
+      },
     },
     name: {
       type: DataTypes.STRING,
@@ -26,14 +30,13 @@ module.exports = function (app) {
     hooks: {
       beforeCount(options) {
         options.raw = true;
-      }
+      },
     }
   });
 
   // eslint-disable-next-line no-unused-vars
   brand.associate = function (models) {
-    // Define associations here
-    // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    brand.belongsTo(models.upload, { as: 'logo', foreignKey: 'logoId' });
   };
 
   return brand;

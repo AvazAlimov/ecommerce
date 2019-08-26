@@ -9,7 +9,7 @@
           tr
             td.text-center
               v-avatar(color="white")
-                v-img(v-if="item.logo" :src="item.logo")
+                v-img(v-if="item.logo" :src="item.logo.path + item.logo.thumbnail")
                 v-icon(v-else) photo
             td {{ item.name }}
             td.text-center

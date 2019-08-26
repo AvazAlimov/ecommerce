@@ -3,7 +3,21 @@
     v-flex(xs12)
       .border.pa-4.radius
         .title.mb-4 {{ $t($route.name) }}
-        v-text-field(
+        v-img.border.radius(v-if="file" max-width="256" :src="file.src")
+            v-layout(row)
+              v-spacer
+              v-btn.ma-2(icon small color="red" @click="file=null")
+                v-icon close
+        v-btn(v-else
+          outlined color="#707070"
+          @click="$refs.fileInput.click()")
+          v-icon image
+          | Привязать логотип
+        input(
+          ref="fileInput" type="file" name="file"
+          style="display: none;" accept=".jpg, .png, .jpeg")
+
+        v-text-field.mt-4(
           v-model="payload.name"
           label="Уникальное название бренда"
           outlined
@@ -34,6 +48,7 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import upload from '@/services/uploads';
 
 export default {
   name: 'Brand',
@@ -42,8 +57,10 @@ export default {
       name: '',
       names: {},
       active: true,
+      logoId: null,
     },
     loading: null,
+    file: null,
     error: null,
   }),
   computed: {
@@ -54,15 +71,26 @@ export default {
   methods: {
     ...mapActions('languages', { findLanguages: 'find' }),
     ...mapActions('brands', ['create', 'update', 'get']),
-    submit() {
-      this.loading = true;
+    async submit() {
+      // this.loading = true;
       this.error = null;
+
+      await this.uploadFile();
+
       this.getOnSubmitAction()
-        .then(() => {
-          this.$router.push({ name: 'brands' });
-        })
+        .then(() => this.$router.push({ name: 'brands' }))
         .catch((error) => { this.error = error; })
         .finally(() => { this.loading = false; });
+    },
+    async uploadFile() {
+      if (this.file) {
+        const data = new FormData();
+        data.append('file', this.file.file);
+        const file = await upload(data);
+        this.payload.logoId = file.id;
+      } else {
+        this.payload.logoId = null;
+      }
     },
     getOnSubmitAction() {
       return this.$route.params.id
@@ -84,6 +112,20 @@ export default {
   },
   mounted() {
     this.$validator.validate();
+    this.$refs.fileInput.onchange = () => {
+      const files = Array.from(this.$refs.fileInput.files);
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.file = {
+            src: e.target.result,
+            file,
+          };
+          console.log(this.file);
+        };
+        reader.readAsDataURL(file);
+      });
+    };
   },
 };
 </script>

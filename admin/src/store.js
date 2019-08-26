@@ -15,6 +15,7 @@ export default new Vuex.Store({
     service('languages', { paginate: false }),
     service('brands', { paginate: false }),
     service('products', { paginate: true }),
+    service('uploads', { paginate: true }),
     auth({ userService: 'users' }),
   ],
 });
