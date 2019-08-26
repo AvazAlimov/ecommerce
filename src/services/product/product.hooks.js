@@ -34,6 +34,17 @@ function removeNullModels(context) {
   return context;
 }
 
+async function includeFiles(context) {
+  const { app } = context;
+
+  return Promise.all(context.result.photoIds.map(fileId => app.service('uploads').get(fileId)))
+    .then(results => {
+      results.forEach(file => file.path = context.app.get('url') + 'uploads/');
+      context.result.photos = results;
+      return context;
+    });
+}
+
 module.exports = {
   before: {
     all: [],
@@ -42,13 +53,21 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [
+      context => {
+        return context.app.service('products').get(context.id)
+          .then(async product => {
+            await product.photoIds.map(id => context.app.service('uploads').remove(id));
+            return context;
+          });   
+      }
+    ]
   },
 
   after: {
     all: [],
     find: [removeNullModels],
-    get: [removeNullModels],
+    get: [removeNullModels, includeFiles],
     create: [],
     update: [],
     patch: [],

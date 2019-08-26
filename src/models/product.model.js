@@ -17,7 +17,7 @@ module.exports = function (app) {
     contents: {
       type: DataTypes.JSONB,
     },
-    photos: {
+    photoIds: {
       type: DataTypes.JSONB,
     },
     active: {
