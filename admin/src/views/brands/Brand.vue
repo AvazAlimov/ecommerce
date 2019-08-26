@@ -6,7 +6,7 @@
         v-img.border.radius(v-if="file" max-width="256" :src="file.src")
             v-layout(row)
               v-spacer
-              v-btn.ma-2(icon small color="red" @click="file=null")
+              v-btn.ma-2(icon small color="red" @click="removeFile()")
                 v-icon close
         v-btn(v-else
           outlined color="#707070"
@@ -48,6 +48,7 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+// eslint-disable-next-line import/no-unresolved, import/extensions
 import upload from '@/services/uploads';
 
 export default {
@@ -70,7 +71,8 @@ export default {
   },
   methods: {
     ...mapActions('languages', { findLanguages: 'find' }),
-    ...mapActions('brands', ['create', 'update', 'get']),
+    ...mapActions('uploads', ['remove']),
+    ...mapActions('brands', ['create', 'update', 'patch', 'get']),
     async submit() {
       // this.loading = true;
       this.error = null;
@@ -83,7 +85,7 @@ export default {
         .finally(() => { this.loading = false; });
     },
     async uploadFile() {
-      if (this.file) {
+      if (this.file && !this.file.id) {
         const data = new FormData();
         data.append('file', this.file.file);
         const file = await upload(data);
@@ -91,6 +93,14 @@ export default {
       } else {
         this.payload.logoId = null;
       }
+    },
+    async removeFile() {
+      if (this.file.id) {
+        await this.remove(this.file.id);
+        await this.patch([this.$route.params.id, { logoId: null }]);
+      }
+      delete this.payload.logo;
+      this.file = null;
     },
     getOnSubmitAction() {
       return this.$route.params.id
@@ -103,6 +113,12 @@ export default {
     if (this.$route.params.id) {
       this.get(this.$route.params.id)
         .then(async (brand) => {
+          if (brand.logo) {
+            this.file = {
+              id: brand.logo.id,
+              src: brand.logo.path + brand.logo.filename,
+            };
+          }
           this.payload = brand;
           await new Promise(resolve => setTimeout(resolve, 50));
           this.$validator.validate();
@@ -121,7 +137,6 @@ export default {
             src: e.target.result,
             file,
           };
-          console.log(this.file);
         };
         reader.readAsDataURL(file);
       });

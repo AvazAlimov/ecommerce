@@ -1,26 +1,46 @@
+function includeModels(context) {
+  // Get the Sequelize instance. In the generated application via:
+  const sequelize = context.app.get('sequelizeClient');
+  const { upload } = sequelize.models;
 
+  context.params.sequelize = {
+    include: [{
+      model: upload,
+      as: 'logo',
+      required: false
+    }],
+    nest: true,
+  };
+
+  return Promise.resolve(context);
+}
+
+function addPath(context) {
+  if (context.result.data instanceof Array) {
+    context.result.data.forEach(element => {
+      const { logo } = element;
+      if (logo.id) {
+        logo.path = context.app.get('url') + 'uploads/';
+      } else {
+        delete element.logo;
+      }
+    });
+  } else {
+    const { logo } = context.result;
+    if (logo.id) {
+      logo.path = context.app.get('url') + 'uploads/';
+    } else {
+      delete context.result.logo;
+    }
+  }
+  return context;
+}
 
 module.exports = {
   before: {
     all: [],
-    find: [
-      context => {
-        // Get the Sequelize instance. In the generated application via:
-        const sequelize = context.app.get('sequelizeClient');
-        const { upload } = sequelize.models;
-
-        context.params.sequelize = {
-          include: [{
-            model: upload,
-            as: 'logo',
-          }],
-          nest: true,
-        };
-
-        return Promise.resolve(context);
-      },
-    ],
-    get: [],
+    find: [includeModels],
+    get: [includeModels],
     create: [],
     update: [],
     patch: [],
@@ -39,18 +59,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [
-      context => {
-        context.result.data.forEach(element => {
-          const {logo} = element;
-          if (logo) {
-            logo.path = context.app.get('url') + 'uploads/';
-          }
-        });
-        return context;
-      }
-    ],
-    get: [],
+    find: [ addPath ],
+    get: [ addPath ],
     create: [],
     update: [],
     patch: [],
