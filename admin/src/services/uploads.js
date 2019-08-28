@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default (data) => {
   const instance = axios.create({
-    baseURL: 'http://localhost:3030',
+    baseURL: process.env.VUE_APP_BASE_URL,
     headers: {
       Authorization: `Bearer ${localStorage.getItem('feathers-jwt')}`,
       'Content-Type': 'multipart/form-data',

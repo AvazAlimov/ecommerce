@@ -3,7 +3,7 @@ import socketio from '@feathersjs/socketio-client';
 import io from 'socket.io-client';
 import auth from '@feathersjs/authentication-client';
 
-const socket = io('http://localhost:3030');
+const socket = io(process.env.VUE_APP_BASE_URL);
 const app = feathers();
 
 // Setup the transport (Rest, Socket, etc.) here
