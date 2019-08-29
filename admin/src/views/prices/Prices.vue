@@ -14,10 +14,17 @@
             td {{ item.name }}
             td.text-center {{ item.category ? item.category.name : '-' }}
             td.text-center {{ item.brand ? item.brand.name : '-' }}
-            td.text-end.title {{ item.prices.length ? item.prices[0].value : '0' }} сум
+            td.title
+              .text-end(v-if="item.prices.length") {{ item.prices[0].value }} сум
+              .text-end(v-else) -
+            td
+              .text-end(v-if="item.prices.length")
+                | {{ item.prices[0].createdAt | moment('YYYY-MM-DD HH:mm') }}
+              .text-end(v-else) -
         template(v-slot:expanded-item="{ headers, item }")
-          tr(v-for="price in item.prices" :key="price.id")
-            td.border.text-end(:colspan="headers.length") {{ price.value }} сум
+          tr.text-end(v-for="price in item.prices" :key="price.id")
+            td(:colspan="headers.length - 1") {{ price.value }} сум
+            td {{ price.createdAt | moment('YYYY-MM-DD HH:mm') }}
         template(v-slot:footer)
           v-divider
           .text-end.pa-2
@@ -37,7 +44,8 @@ export default {
       { text: 'Наименование', value: 'name' },
       { text: 'Категория', value: 'category.name', align: 'center' },
       { text: 'Бренд', value: 'brand.name', align: 'center' },
-      { text: 'Цена', value: 'price', align: 'end' },
+      { text: 'Цена', align: 'end', sortable: false },
+      { text: 'Дата', align: 'end', sortable: false },
     ],
   }),
   computed: {

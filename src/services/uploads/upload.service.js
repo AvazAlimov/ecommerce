@@ -10,7 +10,7 @@ module.exports = function (app) {
 
   const options = {
     Model,
-    paginate,
+    // paginate,
   };
 
   const storage = multer.diskStorage({

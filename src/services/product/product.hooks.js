@@ -54,16 +54,12 @@ async function includeFiles(context) {
   
   products.map(
     product => {
-      product.photos = [];
-      product.photoIds.forEach(
-        id => promises.push(
-          app.service('uploads')
-            .get(id)
-            .then(file => {
-              file.path = context.app.get('url') + 'uploads/';
-              product.photos.push(file);
-            })
-        )
+      promises.push(app.service('uploads')
+        .find({ query: { id: { $in: product.photoIds }}})
+        .then(files => {
+          files.forEach(file => { file.path = context.app.get('url') + 'uploads/'; });
+          product.photos = files;
+        })
       );
     }
   );
