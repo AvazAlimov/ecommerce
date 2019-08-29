@@ -4,15 +4,18 @@ function includeModels(context) {
   const { brand, category } = sequelize.models;
 
   context.params.sequelize = {
-    include: [{
-      model: brand,
-      as: 'brand',
-      required: false
-    }, {
-      model: category,
-      as: 'category',
-      required: false
-    }],
+    include: [
+      {
+        model: brand,
+        as: 'brand',
+        required: false
+      },
+      {
+        model: category,
+        as: 'category',
+        required: false
+      }
+    ],
     nest: true,
   };
 
@@ -20,29 +23,52 @@ function includeModels(context) {
 }
 
 function removeNullModels(context) {
-  if (context.result.data instanceof Array) {
-    context.result.data.forEach(element => {
-      const { brand, category } = element;
-      if (!brand.id)  delete element.brand;
-      if (!category.id)  delete element.category;
-    });
-  } else {
-    const { brand, category } = context.result;
-    if (!brand.id) delete context.result.brand;
-    if (!category.id) delete context.result.category;
-  }
+  const products = context.result.data instanceof Array ? context.result.data : [context.result];
+  products.forEach(element => {
+    const { brand, category } = element;
+    if (!brand.id)  delete element.brand;
+    if (!category.id)  delete element.category;
+  });
   return context;
+}
+
+async function includePrices(context) {
+  const { app } = context;
+  const products = context.result.data instanceof Array ? context.result.data : [context.result];
+  return Promise.all(
+    products.map(
+      product => app.service('prices')
+        .find({ query: { 
+          productId: product.id,
+          $sort: { createdAt: -1 }
+        }})
+        .then(results => { product.prices = results; })
+    )
+  ).then(() => context);
 }
 
 async function includeFiles(context) {
   const { app } = context;
+  const products = context.result.data instanceof Array ? context.result.data : [context.result];
+  const promises = [];
+  
+  products.map(
+    product => {
+      product.photos = [];
+      product.photoIds.forEach(
+        id => promises.push(
+          app.service('uploads')
+            .get(id)
+            .then(file => {
+              file.path = context.app.get('url') + 'uploads/';
+              product.photos.push(file);
+            })
+        )
+      );
+    }
+  );
 
-  return Promise.all(context.result.photoIds.map(fileId => app.service('uploads').get(fileId)))
-    .then(results => {
-      results.forEach(file => file.path = context.app.get('url') + 'uploads/');
-      context.result.photos = results;
-      return context;
-    });
+  return Promise.all(promises).then(() => context);
 }
 
 module.exports = {
@@ -66,8 +92,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [removeNullModels],
-    get: [removeNullModels, includeFiles],
+    find: [removeNullModels, includeFiles, includePrices],
+    get: [removeNullModels, includeFiles, includePrices],
     create: [],
     update: [],
     patch: [],
