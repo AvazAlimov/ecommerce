@@ -7,6 +7,7 @@
       v-toolbar-title.text-capitalize {{ $t($route.name) }}
       v-spacer
       v-btn.text-lowercase(
+        v-if="user"
         depressed rounded
         color="primary"
         @click="logout()"

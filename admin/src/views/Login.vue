@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'Login',
   data: () => ({
@@ -47,6 +49,9 @@ export default {
     },
     error: null,
   }),
+  computed: {
+    ...mapState('auth', ['user']),
+  },
   methods: {
     signin() {
       this.error = null;
@@ -54,7 +59,11 @@ export default {
 
       this.$store.dispatch('auth/authenticate', this.payload)
         .then(() => {
-          this.$router.push({ name: 'home' });
+          if (this.user.role === 0) {
+            this.$router.push({ name: 'home' });
+          } else {
+            this.$store.dispatch('auth/logout');
+          }
         })
         .catch((error) => {
           this.error = error.message;

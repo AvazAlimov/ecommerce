@@ -8,5 +8,15 @@ export default {
       name,
       component: () => import('./Customers.vue'),
     },
+    {
+      path: 'add',
+      name: `${name}.add`,
+      component: () => import('./Customer.vue'),
+    },
+    {
+      path: ':id',
+      name: `${name}.edit`,
+      component: () => import('./Customer.vue'),
+    },
   ],
 };
