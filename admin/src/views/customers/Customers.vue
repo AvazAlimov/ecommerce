@@ -1,32 +1,48 @@
 <template lang="pug">
   v-layout(row wrap)
     v-flex(xs12)
-      v-data-table.border.radius(
-        :headers="headers"
-        :items="customers"
-        hide-default-footer)
-        template(v-slot:item="{ item }")
-          tr
-            td {{ item.email }}
-            td.text-center {{ item.createdAt | moment('YYYY-MM-DD HH:mm') }}
-            td.text-center {{ item.updatedAt | moment('YYYY-MM-DD HH:mm') }}
-            td.text-end
-              v-btn(icon small :to="{ name: 'customers.edit', params: { id: item.id } }")
-                v-icon(small) edit
-              v-btn(icon small color="red" @click="removeUser(item.id)")
-                v-icon(small) delete
-        template(v-slot:footer)
-          v-divider
-          .text-end.pa-2
-            v-btn(outlined color="#707070" :to="{ name: 'customers.add' }") Добавить клиента
+      feathers-vuex-find(
+        service="users"
+        :query="{ $skip: (page - 1) * 10, role: 1 }"
+        watch="query.$skip")
+        template(slot-scope="{ items, isFindPending, pagination }")
+          v-data-table.border.radius(
+            :headers="headers"
+            :loading="isFindPending"
+            :items="items"
+            :page.sync="page"
+            :items-per-page="10"
+            hide-default-footer)
+            template(v-slot:item="{ item }")
+              tr
+                td {{ item.email }}
+                td.text-center {{ item.createdAt | moment('YYYY-MM-DD HH:mm') }}
+                td.text-center {{ item.updatedAt | moment('YYYY-MM-DD HH:mm') }}
+                td.text-end
+                  v-btn(icon small :to="{ name: 'customers.edit', params: { id: item.id } }")
+                    v-icon(small) edit
+                  v-btn(icon small color="red" @click="removeUser(item.id)")
+                    v-icon(small) delete
+            template(v-slot:footer)
+              v-divider
+              v-pagination(
+                v-model="page"
+                :length="$getPageCount(pagination)"
+                prev-icon="chevron_left"
+                next-icon="chevron_right"
+              )
+              v-divider
+              .text-end.pa-2
+                v-btn(outlined color="#707070" :to="{ name: 'customers.add' }") Добавить клиента
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Customers',
   data: () => ({
+    page: 1,
     headers: [
       { text: 'Эл. адрес', value: 'email' },
       { text: 'Дата создания', value: 'createdAt', align: 'center' },
@@ -34,24 +50,14 @@ export default {
       { sortable: false },
     ],
   }),
-  computed: {
-    ...mapState('users', { findUsersLoading: 'isFindPending' }),
-    ...mapGetters('users', { findUsersInStore: 'find' }),
-    query: () => ({ query: { role: 1 } }),
-    customers() { return this.findUsersInStore(this.query).data; },
-  },
   methods: {
     ...mapActions('users', ['remove']),
-    ...mapActions('users', { findUsers: 'find' }),
     removeUser(id) {
       // eslint-disable-next-line no-alert, no-restricted-globals
       if (confirm('Do you really want to remove a user?')) {
         this.remove(id);
       }
     },
-  },
-  created() {
-    this.findUsers(this.query);
   },
 };
 </script>
