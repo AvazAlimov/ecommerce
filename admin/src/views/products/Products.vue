@@ -3,11 +3,9 @@
     v-flex(xs12)
       feathers-vuex-find(
         service="products"
-        qid="table"
         :query="{ $skip: (page - 1) * 10 }"
         watch="query.$skip")
-
-        template(slot-scope="{ items, isFindPending }")
+        template(slot-scope="{ items, isFindPending, pagination }")
           v-data-table.border.radius(
             :headers="headers"
             :loading="isFindPending"
@@ -32,18 +30,24 @@
                     v-icon(small) delete
             template(v-slot:footer)
               v-divider
-              v-pagination(v-model="page" :length="pageCount")
+              v-pagination(
+                v-model="page"
+                :length="$getPageCount(pagination)"
+                prev-icon="chevron_left"
+                next-icon="chevron_right"
+              )
               v-divider
               .text-end.pa-2
                 v-btn(outlined color="#707070" :to="{ name: 'products.add' }") Добавить товар
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Products',
   data: () => ({
+    page: 1,
     headers: [
       { text: 'Наименование', value: 'name' },
       { text: 'Активный', value: 'active', align: 'center' },
@@ -53,25 +57,12 @@ export default {
       { text: 'Дата изменение', value: 'updatedAt', align: 'center' },
       { sortable: false },
     ],
-    page: 1,
   }),
-  computed: {
-    ...mapState('products', ['pagination']),
-    pageCount() {
-      if (this.pagination.table) {
-        return parseInt(this.pagination.table.total / 10, 10)
-                + (this.pagination.table.total % 10 > 0);
-      }
-      return 0;
-    },
-  },
   methods: {
     ...mapActions('products', ['remove']),
     removeProduct(id) {
       // eslint-disable-next-line no-alert, no-restricted-globals
-      if (confirm('Do you really want to remove a product?')) {
-        this.remove(id);
-      }
+      if (confirm('Do you really want to remove a product?')) this.remove(id);
     },
   },
 };

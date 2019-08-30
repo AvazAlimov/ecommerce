@@ -132,7 +132,8 @@ export default {
     async removeFile(index) {
       const file = this.files[index];
       if (file.id) {
-        this.payload.photoIds.splice(index, 1);
+        const position = this.payload.photoIds.indexOf(file.id);
+        this.payload.photoIds.splice(position, 1);
         await this.remove(file.id);
         await this.patch([this.$route.params.id, { photoIds: this.payload.photoIds }]);
       }

@@ -5,3 +5,6 @@
 .radius {
     border-radius: 4px;
 }
+.v-pagination__item, .v-pagination__navigation {
+    box-shadow: none;
+}

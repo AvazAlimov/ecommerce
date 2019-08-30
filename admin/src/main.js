@@ -9,6 +9,7 @@ import './plugins/veevalidate';
 import './plugins/moment';
 import './plugins/editor';
 import './styles/app.css';
+import './prototypes';
 
 Vue.config.productionTip = false;
 
