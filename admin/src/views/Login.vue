@@ -5,7 +5,9 @@
         v-layout(align-center justify-center)
           v-flex(xs10 sm6 md4 lg3)
             v-form
-              .headline.mb-5.text-center Авторизация
+              v-img(:src="require('@/assets/logo.svg')" contain height="96")
+
+              .headline.my-5.text-center Авторизация
 
               v-text-field(
                 v-model="payload.email"

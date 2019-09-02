@@ -1,1 +1,6 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.5 100"><defs><style>.cls-1{fill:#1697f6;}.cls-2{fill:#7bc6ff;}.cls-3{fill:#1867c0;}.cls-4{fill:#aeddff;}</style></defs><title>Artboard 46</title><polyline class="cls-1" points="43.75 0 23.31 0 43.75 48.32"/><polygon class="cls-2" points="43.75 62.5 43.75 100 0 14.58 22.92 14.58 43.75 62.5"/><polyline class="cls-3" points="43.75 0 64.19 0 43.75 48.32"/><polygon class="cls-4" points="64.58 14.58 87.5 14.58 43.75 100 43.75 62.5 64.58 14.58"/></svg>
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <ellipse stroke="#444" ry="62" rx="62" cy="64" cx="64" stroke-width="4" fill="none"/>
+  <ellipse stroke="#444" ry="14" rx="14" cy="48" cx="48" stroke-width="4" fill="none"/>
+ </g>
+</svg>
