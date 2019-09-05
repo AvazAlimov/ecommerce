@@ -36,6 +36,21 @@ function addPath(context) {
   return context;
 }
 
+function addProductCounts(context) {
+  const sequelize = context.app.get('sequelizeClient');
+  const { product } = sequelize.models;
+
+  const brands = context.result.data instanceof Array ? context.result.data : [context.result];
+  return Promise.all(
+    brands.map(brand => product
+      .findAll({ where: { brandId: brand.id }, attributes: ['id'], raw: true })
+      .then(products => { 
+        brand.productIds = products.map(item => item.id); 
+      })
+    )
+  ).then(() => context);
+}
+
 module.exports = {
   before: {
     all: [],
@@ -59,8 +74,8 @@ module.exports = {
 
   after: {
     all: [],
-    find: [ addPath ],
-    get: [ addPath ],
+    find: [ addProductCounts, addPath ],
+    get: [ addProductCounts, addPath ],
     create: [],
     update: [],
     patch: [],

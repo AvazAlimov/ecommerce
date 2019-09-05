@@ -23,7 +23,7 @@
                 td.text-center
                   v-icon(v-if="item.active" small) check
                   v-icon(v-else small) remove
-                td.text-center {{ item.products || 0 }}
+                td.text-center {{ item.productIds.length }}
                 td.text-center {{ item.createdAt | moment('YYYY-MM-DD HH:mm') }}
                 td.text-center {{ item.updatedAt | moment('YYYY-MM-DD HH:mm') }}
                 td.text-end
