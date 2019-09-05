@@ -1,44 +1,62 @@
 <template lang="pug">
   v-layout(row wrap)
     v-flex(xs12)
-      v-data-table.border.radius(
-        :headers="headers"
-        :items="products"
-        hide-default-footer
-        :expanded.sync="expanded")
-        template(v-slot:item="{ item }")
-          tr
-            td
-              v-btn(icon small @click="toggleItem(item)")
-                v-icon {{ expanded.includes(item) ? 'expand_less' : 'expand_more' }}
-            td {{ item.name }}
-            td.text-center {{ item.category ? item.category.name : '-' }}
-            td.text-center {{ item.brand ? item.brand.name : '-' }}
-            td.title
-              .text-end(v-if="item.prices.length") {{ item.prices[0].value }} сум
-              .text-end(v-else) -
-            td
-              .text-end(v-if="item.prices.length")
-                | {{ item.prices[0].createdAt | moment('YYYY-MM-DD HH:mm') }}
-              .text-end(v-else) -
-        template(v-slot:expanded-item="{ headers, item }")
-          tr.text-end(v-for="price in item.prices" :key="price.id")
-            td(:colspan="headers.length - 1") {{ price.value }} сум
-            td {{ price.createdAt | moment('YYYY-MM-DD HH:mm') }}
-        template(v-slot:footer)
-          v-divider
-          .text-end.pa-2
-            v-btn.mr-2(outlined color="#707070") Импортировать цены
-            v-btn(outlined color="#707070") Опубликовать цены
+      feathers-vuex-find(
+        service="products"
+        :query="{ $skip: (page - 1) * 10 }"
+        watch="query.$skip")
+        template(slot-scope="{ items, isFindPending, pagination }")
+          v-data-table.border.radius(
+            :headers="headers"
+            :loading="isFindPending"
+            :items="items"
+            :page.sync="page"
+            :items-per-page="10"
+            :expanded.sync="expanded"
+            hide-default-footer)
+            template(v-slot:item="{ item }")
+              tr
+                td
+                  v-btn(icon small @click="toggleItem(item)")
+                    v-icon {{ expanded.includes(item) ? 'expand_less' : 'expand_more' }}
+                td {{ item.name }}
+                td.text-center {{ item.category ? item.category.name : '-' }}
+                td.text-center {{ item.brand ? item.brand.name : '-' }}
+                td.title
+                  .text-end(v-if="item.prices.length") {{ item.prices[0].value }} сум
+                  .text-end(v-else) -
+                td
+                  .text-end(v-if="item.prices.length")
+                    | {{ item.prices[0].createdAt | moment('YYYY-MM-DD HH:mm') }}
+                  .text-end(v-else) -
+                td.text-center
+                  v-btn(small icon)
+                    v-icon(small) update
+            template(v-slot:expanded-item="{ headers, item }")
+              tr.text-end(v-for="price in item.prices" :key="price.id")
+                td(:colspan="headers.length - 2") {{ price.value }} сум
+                td {{ price.createdAt | moment('YYYY-MM-DD HH:mm') }}
+                td
+            template(v-slot:footer)
+              v-divider
+              v-pagination(
+                v-model="page"
+                :length="$getPageCount(pagination)"
+                prev-icon="chevron_left"
+                next-icon="chevron_right"
+              )
+              v-divider
+              .text-end.pa-2
+                v-btn.mr-2(outlined color="#707070") Импортировать цены
+                v-btn(outlined color="#707070") Опубликовать цены
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
-
 export default {
   name: 'Prices',
   data: () => ({
     expanded: [],
+    page: 1,
     headers: [
       { sortable: false },
       { text: 'Наименование', value: 'name' },
@@ -46,25 +64,10 @@ export default {
       { text: 'Бренд', value: 'brand.name', align: 'center' },
       { text: 'Цена', align: 'end', sortable: false },
       { text: 'Дата', align: 'end', sortable: false },
+      { sortable: false },
     ],
   }),
-  computed: {
-    ...mapState('products', { findProductsLoading: 'isFindPending' }),
-    ...mapGetters('products', { findProductsInStore: 'find' }),
-    products() {
-      const products = this.findProductsInStore().data;
-      return products;
-    },
-  },
   methods: {
-    ...mapActions('products', ['remove']),
-    ...mapActions('products', { findProducts: 'find' }),
-    removeProduct(id) {
-      // eslint-disable-next-line no-alert, no-restricted-globals
-      if (confirm('Do you really want to remove a product?')) {
-        this.remove(id);
-      }
-    },
     toggleItem(item) {
       const index = this.expanded.indexOf(item);
       if (index > -1) {
@@ -73,9 +76,6 @@ export default {
         this.expanded.push(item);
       }
     },
-  },
-  created() {
-    this.findProducts();
   },
 };
 </script>
