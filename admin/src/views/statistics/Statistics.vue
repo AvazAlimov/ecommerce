@@ -16,6 +16,7 @@
 </template>
 
 <script>
+/* eslint-disable import/extensions, import/no-unresolved */
 import Card from '@/components/statistics/Card';
 import LineGraph from '@/components/statistics/LineGraph';
 
@@ -28,6 +29,7 @@ export default {
   data: () => ({
     cards: [
       {
+        id: 'orders',
         title: {
           name: 'Всего заказов',
           value: '4,219',
@@ -42,6 +44,7 @@ export default {
         },
       },
       {
+        id: 'sales',
         title: {
           name: 'Общая продажа',
           value: '$12,251',
@@ -56,34 +59,50 @@ export default {
         },
       },
       {
+        id: 'users',
         title: {
           name: 'Всего пользователей',
-          value: '1,249',
+          value: '0',
         },
         positive: {
           name: 'Активные',
-          value: '1,112',
+          value: '0',
         },
         negative: {
           name: 'Пассивные',
-          value: '137',
+          value: '0',
         },
       },
       {
+        id: 'products',
         title: {
           name: 'Всего товаров',
-          value: '5,824',
+          value: '0',
         },
         positive: {
           name: 'Продаваемые',
-          value: '4,000',
+          value: '0',
         },
         negative: {
           name: 'Непродаваемые',
-          value: '1,824',
+          value: '0',
         },
       },
     ],
   }),
+  created() {
+    this.$store.dispatch('users/find', {}).then((result) => {
+      const card = this.cards.find(item => item.id === 'users');
+      card.title.value = result.total;
+      card.positive.value = result.total;
+      card.negative.value = 0;
+    });
+    this.$store.dispatch('products/find', {}).then((result) => {
+      const card = this.cards.find(item => item.id === 'products');
+      card.title.value = result.total;
+      card.positive.value = result.total;
+      card.negative.value = 0;
+    });
+  },
 };
 </script>

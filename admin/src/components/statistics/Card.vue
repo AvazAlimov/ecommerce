@@ -24,15 +24,15 @@ export default {
     title: {
       type: Object,
       required: true,
-      validator: value => !!value.name && !!value.value,
+      validator: value => !!value.name && !!(value.value === 0 ? true : value.value),
     },
     positive: {
       type: Object,
-      validator: value => !!value.name && !!value.value,
+      validator: value => !!value.name && !!(value.value === 0 ? true : value.value),
     },
     negative: {
       type: Object,
-      validator: value => !!value.name && !!value.value,
+      validator: value => !!value.name && !!(value.value === 0 ? true : value.value),
     },
   },
 };
