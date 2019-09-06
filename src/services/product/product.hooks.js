@@ -4,6 +4,9 @@ function includeModels(context) {
   const { brand, category } = sequelize.models;
 
   context.params.sequelize = {
+    order: [
+      ['id', 'ASC'],
+    ],
     include: [
       {
         model: brand,

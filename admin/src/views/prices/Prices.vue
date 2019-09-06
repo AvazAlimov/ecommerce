@@ -1,17 +1,19 @@
 <template lang="pug">
   v-layout(row wrap)
     v-flex(xs12)
+      create-price(ref="createPrice")
       feathers-vuex-find(
         service="products"
         :query="{ $skip: (page - 1) * 10 }"
         watch="query.$skip")
         template(slot-scope="{ items, isFindPending, pagination }")
           v-data-table.border.radius(
+            v-if="pagination"
             :headers="headers"
             :loading="isFindPending"
             :items="items"
             :page.sync="page"
-            :items-per-page="10"
+            :items-per-page="pagination.limit"
             :expanded.sync="expanded"
             hide-default-footer)
             template(v-slot:item="{ item }")
@@ -30,13 +32,15 @@
                     | {{ item.prices[0].createdAt | moment('YYYY-MM-DD HH:mm') }}
                   .text-end(v-else) -
                 td.text-center
-                  v-btn(small icon)
+                  v-btn(small icon @click="$refs.createPrice.setProduct(item)")
                     v-icon(small) update
             template(v-slot:expanded-item="{ headers, item }")
               tr.text-end(v-for="price in item.prices" :key="price.id")
                 td(:colspan="headers.length - 2") {{ price.value }} сум
                 td {{ price.createdAt | moment('YYYY-MM-DD HH:mm') }}
-                td
+                td.text-center
+                  //- v-btn(small icon color="red" @click="removePrice(price.id)")
+                  //-   v-icon(small) delete
             template(v-slot:footer)
               v-divider
               v-pagination(
@@ -47,13 +51,25 @@
               )
               v-divider
               .text-end.pa-2
-                v-btn.mr-2(outlined color="#707070") Импортировать цены
-                v-btn(outlined color="#707070") Опубликовать цены
+                v-btn.mr-2(outlined color="#707070" @click="download()") Импортировать цены
+                v-btn(outlined color="#707070" @click="$refs.fileInput.click()") Опубликовать цены
+                input(
+                  ref="fileInput" type="file" name="name"
+                  accept=".xlsx" style="display: none;"
+                  @change="upload"
+                )
 </template>
 
 <script>
+// eslint-disable-next-line import/no-unresolved, import/extensions
+import CreatePrice from '@/components/prices/CreatePrice.vue';
+// eslint-disable-next-line import/no-unresolved, import/extensions
+import Excel from '@/services/excel.js';
+// import { mapActions } from 'vuex';
+
 export default {
   name: 'Prices',
+  components: { CreatePrice },
   data: () => ({
     expanded: [],
     page: 1,
@@ -68,12 +84,48 @@ export default {
     ],
   }),
   methods: {
+    // ...mapActions('prices', ['remove']),
+    // removePrice(id) {
+    //   // eslint-disable-next-line no-alert, no-restricted-globals
+    //   if (confirm('Do you really want to remove a price?')) {
+    //     this.remove(id);
+    //     this.$store.dispatch('products/find');
+    //   }
+    // },
     toggleItem(item) {
       const index = this.expanded.indexOf(item);
       if (index > -1) {
         this.expanded.splice(index, 1);
       } else {
         this.expanded.push(item);
+      }
+    },
+    async download() {
+      const products = [];
+      const loop = skip => this.$store.dispatch('products/find', {
+        query: {
+          $limit: 50,
+          $skip: skip,
+        },
+      })
+        .then((result) => {
+          result.data.forEach(element => products.push(element));
+          if (result.total > result.skip + result.limit) {
+            loop(skip + 50);
+          } else {
+            Excel.priceToExcel(products, 'prices');
+          }
+        });
+      loop(0);
+    },
+    upload() {
+      const file = this.$refs.fileInput.files[0];
+      if (file) {
+        Excel.excelToPrice(file).then((prices) => {
+          Promise.all(prices.map(price => this.$store.dispatch('prices/create', price)))
+            .then(() => this.$store.dispatch('products/find'))
+            .catch(console.error);
+        });
       }
     },
   },
