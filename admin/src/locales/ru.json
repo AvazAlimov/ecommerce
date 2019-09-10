@@ -15,5 +15,8 @@
     "products.add": "Добавление нового товара",
     "products.edit": "Редактирование товара",
     "customers.add": "Добавление нового клиента",
-    "customers.edit": "Редактирование клиента"
+    "customers.edit": "Редактирование клиента",
+    "orders.pending": "Заказы в ожидании",
+    "orders.finished": "Завершенные заказы",
+    "orders.new": "Новый заказ"
 }

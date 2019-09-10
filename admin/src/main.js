@@ -8,6 +8,7 @@ import './registerServiceWorker';
 import './plugins/veevalidate';
 import './plugins/moment';
 import './plugins/editor';
+import './plugins/numerals';
 import './styles/app.css';
 import './prototypes';
 

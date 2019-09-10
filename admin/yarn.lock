@@ -7787,6 +7787,11 @@ number-is-nan@^1.0.0:
   resolved "https://registry.npm.taobao.org/number-is-nan/download/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
+numeral@>=2:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.6.tgz#4ad080936d443c2561aed9f2197efffe25f4e506"
+  integrity sha1-StCAk21EPCVhrtnyGX7//iX05QY=
+
 nwsapi@^2.0.7:
   version "2.1.4"
   resolved "https://registry.npm.taobao.org/nwsapi/download/nwsapi-2.1.4.tgz#e006a878db23636f8e8a67d33ca0e4edf61a842f"
@@ -11064,6 +11069,11 @@ vue-moment@^4.0.0:
   integrity sha512-lNkEPuA3i3A4q4TDSwOXoRF4Y2vHHdaTOSvpPyGgxoFQP8n4sUh6jU5aJj3FIMlXo5UaHLPIz5hvvpvYx9Wj0w==
   dependencies:
     moment "^2.11.1"
+
+vue-numerals@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/vue-numerals/-/vue-numerals-3.0.4.tgz#400031c80ea86da8f88781d134b12c9bb37129af"
+  integrity sha512-MihDFXWeyU/r+ciKoJXGW26LjkBrni1PJoUPmTrKjcP2v2dBEMuaJYMgVAZ+QE44Tqb0sglgrxTNMvEzRe04xg==
 
 vue-router@^3.0.3:
   version "3.0.7"
