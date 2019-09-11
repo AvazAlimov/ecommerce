@@ -19,7 +19,7 @@
             template(v-slot:item="{ item }")
               tr
                 td
-                  v-btn(icon small @click="toggleItem(item)")
+                  v-btn(v-if="item.prices.length" icon small @click="toggleItem(item)")
                     v-icon {{ expanded.includes(item) ? 'expand_less' : 'expand_more' }}
                 td {{ item.name }}
                 td.text-center {{ item.category ? item.category.name : '-' }}
@@ -35,12 +35,17 @@
                   v-btn(small icon @click="$refs.createPrice.setProduct(item)")
                     v-icon(small) update
             template(v-slot:expanded-item="{ headers, item }")
-              tr.text-end(v-for="price in item.prices" :key="price.id")
-                td(:colspan="headers.length - 2") {{ price.value }} сум
-                td {{ price.createdAt | moment('YYYY-MM-DD HH:mm') }}
-                td.text-center
-                  //- v-btn(small icon color="red" @click="removePrice(price.id)")
-                  //-   v-icon(small) delete
+              tr
+                td(:colspan="headers.length").primary.lighten-2
+                    v-sparkline(
+                      auto-v-navigation-drawer
+                      :gradient="['#ffffff']"
+                      :line-width="1"
+                      :label-size="4"
+                      color="rgba(255, 255, 255, .9)"
+                      :labels="['0 сум'].concat(item.prices.map(price\
+                        => `${price.value} сум`).reverse())"
+                      :value="[0].concat(item.prices.map(price=>price.value).reverse())")
             template(v-slot:footer)
               v-divider
               v-pagination(
