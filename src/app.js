@@ -20,6 +20,8 @@ const authentication = require('./authentication');
 
 const sequelize = require('./sequelize');
 
+const payment = require('./payment/payme');
+
 const app = express(feathers());
 
 // Load app configuration
@@ -35,6 +37,7 @@ app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 app.use('/', express.static(app.get('public')));
 app.use('/admin', express.static(app.get('admin')));
 app.use('/uploads', express.static(app.get('uploads')));
+app.use('/api/payment/payme', payment);
 
 // Set up Plugins and providers
 app.configure(express.rest());

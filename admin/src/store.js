@@ -14,11 +14,10 @@ export default new Vuex.Store({
     service('categories'),
     service('languages'),
     service('brands'),
-    service('products', {
-      pagination: false,
-    }),
+    service('products', { pagination: false }),
     service('uploads'),
     service('prices'),
+    service('orders'),
     auth({ userService: 'users' }),
   ],
 });

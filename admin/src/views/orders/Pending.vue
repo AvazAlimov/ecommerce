@@ -2,7 +2,7 @@
   v-layout(row wrap)
     v-flex(xs12)
       feathers-vuex-find(
-        service="products"
+        service="orders"
         :query="{ $skip: (page - 1) * 10 }"
         watch="query.$skip")
         template(slot-scope="{ items, isFindPending, pagination }")
@@ -15,19 +15,11 @@
             hide-default-footer)
             template(v-slot:item="{ item }")
               tr
-                td {{ item.name }}
-                td.text-center
-                  v-icon(v-if="item.active" small) check
-                  v-icon(v-else small) remove
-                td.text-center {{ item.category ? item.category.name : '-' }}
-                td.text-center {{ item.brand ? item.brand.name : '-' }}
+                td {{ item.id }}
+                td {{ item.client.email }}
+                td.text-center {{ item.price | numeralFormat }} сум
                 td.text-center {{ item.createdAt | moment('YYYY-MM-DD HH:mm') }}
                 td.text-center {{ item.updatedAt | moment('YYYY-MM-DD HH:mm') }}
-                td.text-end
-                  v-btn(icon small :to="{ name: 'products.edit', params: { id: item.id } }")
-                    v-icon(small) edit
-                  v-btn(icon small color="red" @click="removeProduct(item.id)")
-                    v-icon(small) delete
             template(v-slot:footer)
               v-divider
               v-pagination(
@@ -43,13 +35,11 @@ export default {
   data: () => ({
     page: 1,
     headers: [
-      { text: 'Наименование', value: 'name' },
-      { text: 'Активный', value: 'active', align: 'center' },
-      { text: 'Категория', value: 'categoryId', align: 'center' },
-      { text: 'Бренд', value: 'brandId', align: 'center' },
+      { text: 'Номер заказа', value: 'id' },
+      { text: 'Клиент', value: 'client.name' },
+      { text: 'Цена', value: 'price', align: 'center' },
       { text: 'Дата создания', value: 'createdAt', align: 'center' },
       { text: 'Дата изменение', value: 'updatedAt', align: 'center' },
-      { sortable: false },
     ],
   }),
 };

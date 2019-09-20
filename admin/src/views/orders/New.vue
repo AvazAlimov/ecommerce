@@ -51,7 +51,12 @@
           v-flex(extend)
             .title Итоговая цена: {{ totalPrice | numeralFormat }} сум
           v-flex(shrink)
-            v-btn.ml-3(outlined :disabled="errors.items.length > 0 || !user") Подтвердить
+            v-btn.ml-3(
+              :loading="loading"
+              :disabled="errors.items.length > 0 || !user"
+              @click="submit()"
+              outlined
+            ) Подтвердить
 </template>
 <script>
 import { mapActions } from 'vuex';
@@ -60,6 +65,7 @@ import { isObject } from 'util';
 export default {
   name: 'New',
   data: () => ({
+    loading: false,
     userQuery: '',
     clients: [],
     user: null,
@@ -77,6 +83,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('orders', ['create']),
     ...mapActions('users', { findClients: 'find' }),
     ...mapActions('products', { findProducts: 'find' }),
     addProduct(product) {
@@ -89,6 +96,44 @@ export default {
         });
       }
       this.$refs.procutsSearch.setValue(null);
+    },
+    submit() {
+      this.loading = true;
+      this.create({
+        clientId: this.user.id,
+        items: this.items,
+        price: this.totalPrice,
+      })
+        .then((order) => {
+          const form = document.createElement('form');
+          form.setAttribute('method', 'post');
+          form.setAttribute('action', 'https://test.paycom.uz');
+
+          const merchant = document.createElement('input');
+          merchant.setAttribute('type', 'hidden');
+          merchant.setAttribute('name', 'merchant');
+          merchant.setAttribute('value', '5d838220b280ff2249d61db7');
+
+          const amount = document.createElement('input');
+          amount.setAttribute('type', 'hidden');
+          amount.setAttribute('name', 'amount');
+          amount.setAttribute('value', `${order.price * 1000}`);
+
+          const orderId = document.createElement('input');
+          orderId.setAttribute('type', 'hidden');
+          orderId.setAttribute('name', 'account[order_id]');
+          orderId.setAttribute('value', `${order.id}`);
+
+          form.appendChild(merchant);
+          form.appendChild(amount);
+          form.appendChild(orderId);
+
+          document.getElementsByTagName('body')[0].appendChild(form);
+
+          form.submit();
+        })
+        .catch(console.error)
+        .finally(() => { this.loading = false; });
     },
   },
   watch: {
