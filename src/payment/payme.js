@@ -27,7 +27,7 @@ module.exports = (app) => {
         if (order.paid) {
           res.status(403).json({ code: -31050 });
         } else {
-          if (order.price === parseInt(req.body.params.amount, 10)) {
+          if (order.price * 1000 === parseInt(req.body.params.amount, 10)) {
             res.status(200).json({
               result: {
                 allow: true,
