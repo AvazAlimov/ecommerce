@@ -5,11 +5,9 @@ const router = new Router();
 
 const middleware = (req, res, next) => {
   const key = 'voyJ4K07futDdzKGPu6QZF&CX8J%TYOoR5kb';
-  // check for basic auth header
   if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
     return res.status(401).json({ message: 'Missing Authorization Header' });
   }
-  // verify auth credentials
   const base64Credentials =  req.headers.authorization.split(' ')[1];
   const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
   const [username, password] = credentials.split(':');
@@ -20,46 +18,47 @@ const middleware = (req, res, next) => {
   }
 };
 
-router.post('/', middleware, (req, res) => {
-  if ((typeof req.body.method) === 'string'
-      && (typeof req.body.params) === 'object'
-      && (typeof req.body.id) === 'number') {
-    switch(req.body.method) {
-    case 'CheckPerformTransaction':
-      console.log('CheckPerformTransaction');
-      res.sendStatus(200);
-      break;
-    case 'CheckTransaction':
-      console.log('CheckTransaction');
-      res.sendStatus(200);
-      break;
-    case 'CreateTransaction':
-      console.log('CreateTransaction');
-      res.sendStatus(200);
-      break;
-    case 'PerformTransaction':
-      console.log('PerformTransaction');
-      res.sendStatus(200);
-      break;
-    case 'CancelTransaction':
-      console.log('CancelTransaction');
-      res.sendStatus(200);
-      break;
-    case 'ChangePassword':
-      console.log('ChangePassword');
-      res.sendStatus(200);
-      break;
-    case 'GetStatement':
-      console.log('GetStatement');
-      res.sendStatus(200);
-      break;
-    default:
-      res.status(403).json(errors.getErrorMessages(errors.ERROR_METHOD_NOT_FOUND));
-      break;
-    }
-  } else {
-    res.status(403).json(errors.getErrorMessages(errors.ERROR_INVALID_JSON_RPC_OBJECT));
-  }
-});
+module.exports = (app) => {
+  
+  const checkPerformTransaction = (req, res) => {
+    app.service('orders')
+      .get(req.body.params.account.order_id)
+      .then(order => {
+        if (order.paid) {
+          res.status(403).json({ code: -31050 });
+        } else {
+          if (order.price === parseInt(req.body.params.amount, 10)) {
+            res.status(200).json({
+              result: {
+                allow: true,
+                id: req.body.id
+              }
+            });
+          } else {
+            res.status(403).json({ code: -31001 });
+          }
+        }
+      })
+      .catch(() => { res.status(403).json({ code: -31050 }); });
+  };
 
-module.exports = router;
+  router.post('/', middleware, (req, res) => {
+    if ((typeof req.body.method) === 'string'
+        && (typeof req.body.params) === 'object'
+        && (typeof req.body.id) === 'number') {
+      
+      switch(req.body.method) {
+      case 'CheckPerformTransaction':
+        checkPerformTransaction(req, res);
+        break;
+      default:
+        res.status(403).json(errors.getErrorMessages(errors.ERROR_METHOD_NOT_FOUND));
+        break;
+      }
+    } else {
+      res.status(403).json(errors.getErrorMessages(errors.ERROR_INVALID_JSON_RPC_OBJECT));
+    }
+  });
+
+  app.use('/api/payment/payme', router);
+};
