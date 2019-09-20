@@ -27,31 +27,31 @@ router.post('/', middleware, (req, res) => {
     switch(req.body.method) {
     case 'CheckPerformTransaction':
       console.log('CheckPerformTransaction');
-      req.sendStatus(200);
+      res.sendStatus(200);
       break;
     case 'CheckTransaction':
       console.log('CheckTransaction');
-      req.sendStatus(200);
+      res.sendStatus(200);
       break;
     case 'CreateTransaction':
       console.log('CreateTransaction');
-      req.sendStatus(200);
+      res.sendStatus(200);
       break;
     case 'PerformTransaction':
       console.log('PerformTransaction');
-      req.sendStatus(200);
+      res.sendStatus(200);
       break;
     case 'CancelTransaction':
       console.log('CancelTransaction');
-      req.sendStatus(200);
+      res.sendStatus(200);
       break;
     case 'ChangePassword':
       console.log('ChangePassword');
-      req.sendStatus(200);
+      res.sendStatus(200);
       break;
     case 'GetStatement':
       console.log('GetStatement');
-      req.sendStatus(200);
+      res.sendStatus(200);
       break;
     default:
       res.status(403).json(errors.getErrorMessages(errors.ERROR_METHOD_NOT_FOUND));
