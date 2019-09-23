@@ -3,9 +3,11 @@ const { error, ERROR_TRANSACTION_NOT_FOUND, ERROR_INVALID_ACCOUNT } = require('.
 module.exports = (app, { params }, res) => {
   app
     .service('orders')
-    .get(params.account.order_id)
-    .then(async order => {
-      if(order.transactionId === params.id) {
+    .find({ query: {
+      transactionId: params.id
+    }})
+    .then(async ([order]) => {
+      if(order) {
         res.status(200).json({
           result: { 
             'create_time' : order.createdAt.getTime(),
