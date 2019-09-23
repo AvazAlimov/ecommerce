@@ -4,20 +4,23 @@ module.exports = (app, { params }, res) => {
   app
     .service('orders')
     .get(params.account.order_id)
-    .then(order => {
+    .then(async order => {
       if(order.state === 1) {
-        res.status(200).json({
-          result: { 
-            create_time: order.createdAt.getTime(),
-            transaction: order.id.toString(),
-            state: 1,
-          }
+        order.transactionId = params.id;
+        app.service('orders').update(order.id, order).then(() => {
+          res.status(200).json({
+            result: { 
+              create_time: order.createdAt.getTime(),
+              transaction: order.id.toString(),
+              state: 1,
+            }
+          });
         });
       } else {
         error(ERROR_COULD_NOT_PERFORM, res);
       }
     })
-    .catch((error) => {
+    .catch(() => {
       error(ERROR_INVALID_ACCOUNT, res);
     });
 };
