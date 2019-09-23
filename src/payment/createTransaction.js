@@ -1,6 +1,6 @@
 const { error, ERROR_COULD_NOT_PERFORM, ERROR_INVALID_ACCOUNT, ERROR_INVALID_AMOUNT } = require('./errors');
 
-module.exports = (app, { params }, res) => {
+module.exports = (app, { params, id }, res) => {
   const success = (order) => {
     app
       .service('orders')
@@ -26,7 +26,7 @@ module.exports = (app, { params }, res) => {
           order.transactionId = params.id;
           success(order);
         } else {
-          error(ERROR_COULD_NOT_PERFORM, res);
+          error(ERROR_COULD_NOT_PERFORM, id, res);
         }
       } else {
         app
@@ -34,23 +34,23 @@ module.exports = (app, { params }, res) => {
           .get(params.account.order_id)
           .then(order => {
             if (order.paid) {
-              error(ERROR_INVALID_ACCOUNT, res);
+              error(ERROR_INVALID_ACCOUNT, id, res);
             } else {
               if (order.price * 1000 === parseInt(params.amount, 10)) {
                 order.state = 1;
                 order.transactionId = params.id;
                 success(order);
               } else {
-                error(ERROR_INVALID_AMOUNT, res);
+                error(ERROR_INVALID_AMOUNT, id, res);
               }
             }
           })
           .catch(() => {
-            error(ERROR_INVALID_ACCOUNT, res);
+            error(ERROR_INVALID_ACCOUNT, id, res);
           });
       }
     })
     .catch(() => {
-      error(ERROR_INVALID_ACCOUNT, res);
+      error(ERROR_INVALID_ACCOUNT, id, res);
     });
 };

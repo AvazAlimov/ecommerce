@@ -70,6 +70,6 @@ module.exports.ERROR_COULD_NOT_CANCEL = {
   }
 };
 
-module.exports.error = (error, res) => {
-  res.status(400).json(error);
+module.exports.error = (error, id, res) => {
+  res.status(400).json({ error, id });
 };

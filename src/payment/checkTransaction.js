@@ -1,6 +1,6 @@
 const { error, ERROR_TRANSACTION_NOT_FOUND, ERROR_INVALID_ACCOUNT } = require('./errors');
 
-module.exports = (app, { params }, res) => {
+module.exports = (app, { params, id }, res) => {
   app
     .service('orders')
     .find({ query: { transactionId: params.id }})
@@ -18,10 +18,10 @@ module.exports = (app, { params }, res) => {
           }
         });
       } else {
-        error(ERROR_TRANSACTION_NOT_FOUND, res);
+        error(ERROR_TRANSACTION_NOT_FOUND, id, res);
       }
     })
     .catch(() => {
-      error(ERROR_INVALID_ACCOUNT, res);
+      error(ERROR_INVALID_ACCOUNT, id, res);
     });
 };

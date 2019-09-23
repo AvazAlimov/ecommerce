@@ -5,7 +5,7 @@ const {
   ERROR_COULD_NOT_PERFORM
 } = require('./errors');
 
-module.exports = (app, { params }, res) => {
+module.exports = (app, { params, id }, res) => {
   const success = (order) => {
     res.status(200).json({
       result: {
@@ -34,14 +34,14 @@ module.exports = (app, { params }, res) => {
           if (order.state === 2) {
             success(order);
           } else {
-            error(ERROR_COULD_NOT_PERFORM, res);
+            error(ERROR_COULD_NOT_PERFORM, id, res);
           }
         }
       } else {
-        error(ERROR_TRANSACTION_NOT_FOUND, res);
+        error(ERROR_TRANSACTION_NOT_FOUND, id, res);
       }
     })
     .catch(() => {
-      error(ERROR_INVALID_ACCOUNT, res);
+      error(ERROR_INVALID_ACCOUNT, id, res);
     });
 };

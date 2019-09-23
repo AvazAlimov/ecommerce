@@ -57,7 +57,7 @@ module.exports = app => {
         break;
       }
     } else {
-      error(ERROR_INVALID_JSON_RPC_OBJECT, res);
+      error(ERROR_INVALID_JSON_RPC_OBJECT, null, res);
     }
   });
 
