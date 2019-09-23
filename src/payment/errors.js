@@ -71,5 +71,5 @@ module.exports.ERROR_COULD_NOT_CANCEL = {
 };
 
 module.exports.error = (error, id, res) => {
-  res.status(400).json({ error, id });
+  res.status(200).json({ error, id });
 };
