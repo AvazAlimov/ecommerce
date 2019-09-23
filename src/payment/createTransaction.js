@@ -14,10 +14,10 @@ module.exports = (app, { params }, res) => {
           }
         });
       } else {
-        error(ERROR_COULD_NOT_PERFORM);
+        error(ERROR_COULD_NOT_PERFORM, res);
       }
     })
     .catch(() => {
-      error(ERROR_INVALID_ACCOUNT);
+      error(ERROR_INVALID_ACCOUNT, res);
     });
 };
