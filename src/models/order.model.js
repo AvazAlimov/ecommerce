@@ -26,6 +26,10 @@ module.exports = function (app) {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    state: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+    },
   }, {
     hooks: {
       beforeCount(options) {

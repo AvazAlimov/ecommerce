@@ -9,7 +9,7 @@ module.exports = (app, { id, params }, res) => {
         error(ERROR_INVALID_ACCOUNT);
       } else {
         if (order.price * 1000 === parseInt(params.amount, 10)) {
-          res.status(200).json({ result: { allow: true, id: id } });
+          res.status(200).json({ result: { allow: true, id } });
         } else {
           error(ERROR_INVALID_AMOUNT);
         }
