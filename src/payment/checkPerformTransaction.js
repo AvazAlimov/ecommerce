@@ -6,7 +6,7 @@ module.exports = (app, { id, params }, res) => {
     .get(params.account.order_id)
     .then(order => {
       if (order.paid) {
-        error(ERROR_INVALID_ACCOUNT);
+        error(ERROR_INVALID_ACCOUNT, res);
       } else {
         if (order.price * 1000 === parseInt(params.amount, 10)) {
           res.status(200).json({ result: { allow: true, id } });

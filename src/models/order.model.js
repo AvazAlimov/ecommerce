@@ -28,7 +28,7 @@ module.exports = function (app) {
     },
     state: {
       type: DataTypes.INTEGER,
-      defaultValue: 1,
+      defaultValue: 0,
     },
     transactionId: {
       type: DataTypes.STRING,
