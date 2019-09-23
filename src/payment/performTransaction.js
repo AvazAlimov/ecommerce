@@ -22,15 +22,12 @@ module.exports = (app, { params }, res) => {
           });
         } else {
           if (order.state === 2) {
-            order.performTime = new Date();
-            app.service('orders').update(order.id, order).then(() => {
-              res.status(200).json({
-                result: {
-                  'state' : order.state,
-                  'perform_time' : order.performTime.getTime(),
-                  'transaction' : order.id.toString(),
-                }
-              });
+            res.status(200).json({
+              result: {
+                'state' : order.state,
+                'perform_time' : order.performTime.getTime(),
+                'transaction' : order.id.toString(),
+              }
             });
           } else {
             error(ERROR_COULD_NOT_PERFORM, res);
