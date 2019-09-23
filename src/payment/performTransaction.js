@@ -13,7 +13,7 @@ module.exports = (app, { params }, res) => {
           res.status(200).json({
             result: {
               'perform_time' : order.performTime.getTime(),
-              'transaction' : order.id,
+              'transaction' : order.id.toString(),
               'state' : order.state,
             }
           });

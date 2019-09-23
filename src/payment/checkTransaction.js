@@ -12,7 +12,7 @@ module.exports = (app, { params }, res) => {
             'create_time' : order.createdAt.getTime(),
             'perform_time' : (new Date()).getTime(),
             'cancel_time' : 0,
-            'transaction' : order.id,
+            'transaction' : order.id.toString(),
             'state' : order.state,
             'reason' : null
           }
