@@ -17,7 +17,8 @@ module.exports = (app, { params }, res) => {
         error(ERROR_COULD_NOT_PERFORM, res);
       }
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       error(ERROR_INVALID_ACCOUNT, res);
     });
 };
