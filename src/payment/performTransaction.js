@@ -1,6 +1,21 @@
-const { error, ERROR_TRANSACTION_NOT_FOUND, ERROR_INVALID_ACCOUNT, ERROR_COULD_NOT_PERFORM } = require('./errors');
+const { 
+  error, 
+  ERROR_TRANSACTION_NOT_FOUND, 
+  ERROR_INVALID_ACCOUNT, 
+  ERROR_COULD_NOT_PERFORM
+} = require('./errors');
 
 module.exports = (app, { params }, res) => {
+  const success = (order) => {
+    res.status(200).json({
+      result: {
+        'state' : order.state,
+        'perform_time' : order.performTime.getTime(),
+        'transaction' : order.id.toString(),
+      }
+    });
+  };
+
   app
     .service('orders')
     .find({ query: { transactionId: params.id }})
@@ -11,24 +26,13 @@ module.exports = (app, { params }, res) => {
           order.paid = true;
           order.state = 2;
           order.performTime = new Date();
-          app.service('orders').update(order.id, order).then(() => {
-            res.status(200).json({
-              result: {
-                'state' : order.state,
-                'perform_time' : order.performTime.getTime(),
-                'transaction' : order.id.toString(),
-              }
-            });
-          });
+          app
+            .service('orders')
+            .update(order.id, order)
+            .then(() => success(order));
         } else {
           if (order.state === 2) {
-            res.status(200).json({
-              result: {
-                'state' : order.state,
-                'perform_time' : order.performTime.getTime(),
-                'transaction' : order.id.toString(),
-              }
-            });
+            success(order);
           } else {
             error(ERROR_COULD_NOT_PERFORM, res);
           }
