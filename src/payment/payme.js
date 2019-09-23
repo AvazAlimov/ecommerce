@@ -3,6 +3,7 @@ const { Router } = require('@feathersjs/express');
 const { error, ERROR_METHOD_NOT_FOUND, ERROR_INVALID_JSON_RPC_OBJECT } = require('./errors');
 const checkPerformTransaction = require('./checkPerformTransaction');
 const createTransaction = require('./createTransaction');
+const checkTransaction = require('./checkTransaction');
 
 const router = new Router();
 
@@ -43,6 +44,9 @@ module.exports = app => {
         break;
       case 'CreateTransaction':
         createTransaction(app, body, res);
+        break;
+      case 'CheckTransaction':
+        checkTransaction(app, body, res);
         break;
       default:
         error(ERROR_METHOD_NOT_FOUND, res);
