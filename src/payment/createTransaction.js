@@ -6,9 +6,9 @@ module.exports = (app, { params }, res) => {
     .get(params.account.order_id)
     .then(order => {
       if(order.state === 1) {
-        res.status(200).json({ 
+        res.status(200).json({
           result: { 
-            create_time: order.created_at.getTime(),
+            create_time: order.createdAt.getTime(),
             transaction: order.id,
             state: 1,
           }
@@ -18,7 +18,6 @@ module.exports = (app, { params }, res) => {
       }
     })
     .catch((error) => {
-      console.log(error);
       error(ERROR_INVALID_ACCOUNT, res);
     });
 };
