@@ -4,6 +4,7 @@ const { error, ERROR_METHOD_NOT_FOUND, ERROR_INVALID_JSON_RPC_OBJECT } = require
 const checkPerformTransaction = require('./checkPerformTransaction');
 const createTransaction = require('./createTransaction');
 const checkTransaction = require('./checkTransaction');
+const performTransaction = require('./performTransaction');
 
 const router = new Router();
 
@@ -47,6 +48,9 @@ module.exports = app => {
         break;
       case 'CheckTransaction':
         checkTransaction(app, body, res);
+        break;
+      case 'PerformTransaction':
+        performTransaction(app, body, res);
         break;
       default:
         error(ERROR_METHOD_NOT_FOUND, res);

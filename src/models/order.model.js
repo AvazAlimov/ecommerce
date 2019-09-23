@@ -34,6 +34,10 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    performTime: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   }, {
     hooks: {
       beforeCount(options) {
