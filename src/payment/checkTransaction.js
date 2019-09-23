@@ -3,18 +3,17 @@ const { error, ERROR_TRANSACTION_NOT_FOUND, ERROR_INVALID_ACCOUNT } = require('.
 module.exports = (app, { params }, res) => {
   app
     .service('orders')
-    .find({ query: {
-      transactionId: params.id
-    }})
-    .then(async ([order]) => {
+    .find({ query: { transactionId: params.id }})
+    .then((orders) => {
+      const [order] = orders.data;
       if(order) {
         res.status(200).json({
-          result: { 
+          result: {
             'create_time' : order.createdAt.getTime(),
             'perform_time' : (new Date()).getTime(),
             'cancel_time' : 0,
             'transaction' : order.id,
-            'state' : 2,
+            'state' : order.state,
             'reason' : null
           }
         });
