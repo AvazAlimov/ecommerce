@@ -33,7 +33,7 @@ module.exports = (app, { params, id }, res) => {
           .service('orders')
           .get(params.account.order_id)
           .then(order => {
-            if (order.paid) {
+            if (order.status !== 0) {
               error(ERROR_INVALID_ACCOUNT, id, res);
             } else {
               if (order.price * 1000 === parseInt(params.amount, 10)) {
