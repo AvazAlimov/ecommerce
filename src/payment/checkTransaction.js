@@ -21,7 +21,8 @@ module.exports = (app, { params }, res) => {
         error(ERROR_TRANSACTION_NOT_FOUND, res);
       }
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       error(ERROR_INVALID_ACCOUNT, res);
     });
 };
