@@ -9,7 +9,7 @@ module.exports = (app, { params }, res) => {
         res.status(200).json({
           result: { 
             create_time: order.createdAt.getTime(),
-            transaction: order.id,
+            transaction: order.id.toString(),
             state: 1,
           }
         });
