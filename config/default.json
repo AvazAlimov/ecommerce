@@ -2,7 +2,7 @@
   "url": "http://localhost:3030/",
   "host": "localhost",
   "port": 3030,
-  "public": "../public/",
+  "public": "../client/dist/",
   "admin": "../admin/dist/",
   "uploads": "../uploads/",
   "paginate": {
