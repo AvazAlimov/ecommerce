@@ -1,39 +1,31 @@
 <template lang="pug">
-  .container(style="padding-top: 1.5em; padding-bottom: 1.5em;")
-    .columns
-      .column.is-one-third
-        .title.is-4 Categories
-        ec-tree(:items="categories" v-model="categoryId")
-      .column
-        .title.is-4 Products
-        feathers-vuex-find(service="products" :query="{ categoryId }" watch="query.categoryId")
-          template(slot-scope="{ items, isFindPending, pagination }")
-            .columns.is-gapless
-              .column.is-one-quarter(v-for="(item, index) in items" :key="index")
-                .card.item
-                  figure.image(v-if="item.photos.length")
-                    img.item-image(:src="item.photos[0].path + item.photos[0].thumbnail")
-                  br
-                  .is-size-6.has-text-dark.name {{ item.names['ru'] }}
-                  br
-                  .is-size-6(v-if="item.prices.length")
-                    .has-text-grey-dark
-                      strong {{ item.prices[0].value }}
-                      |  сум
-                  .is-size-6(v-else) -
-                  br
-                  button.button.is-fullwidth Add to card
+section.hero.is-fullheight
+  .hero-head
+    .container(style="padding-top: 1.5em; padding-bottom: 1.5em;")
+      .columns
+        .column.is-one-third
+          .title.is-4 Categories
+          ec-tree(:items="categories" v-model="categoryId")
+        .column
+          .title.is-4 Products
+          feathers-vuex-find(service="products" :query="{ categoryId }" watch="query.categoryId")
+            template(slot-scope="{ items, isFindPending, pagination }")
+              .columns.is-gapless
+                .column.is-one-quarter(v-for="(item, index) in items" :key="index")
+                  ec-item(:item="item")
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-// eslint-disable-next-line import/no-unresolved
+/* eslint-disable import/no-unresolved */
 import Tree from '@/components/Tree.vue';
+import Item from '@/components/Item.vue';
 
 export default {
   name: 'Home',
   components: {
     'ec-tree': Tree,
+    'ec-item': Item,
   },
   data: () => ({
     categoryId: null,
