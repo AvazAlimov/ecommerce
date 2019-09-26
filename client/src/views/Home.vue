@@ -57,7 +57,10 @@ export default {
           else category.parentId = null; // eslint-disable-line no-param-reassign
         });
       const parents = categories.filter(category => category.parentId === null);
-
+      if (parents.length) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.categoryId = parents[0].id;
+      }
       return parents;
     },
   },
