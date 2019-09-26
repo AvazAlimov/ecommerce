@@ -14,14 +14,18 @@
                       v-model="payload.email"
                       type="email"
                       :placeholder="$t('email')"
+                      name="email"
+                      v-validate="'required|email'"
                     )
                 .field
                   label.label {{ $t('password') }}
                   .control
                     input.input(
-                        v-model="payload.password"
-                        :type="show ? 'text': 'password'"
-                        :placeholder="$t('password')"
+                      v-model="payload.password"
+                      :type="show ? 'text': 'password'"
+                      :placeholder="$t('password')"
+                      name="password"
+                      v-validate="'required|min:6'"
                     )
                 label.checkbox.noselect
                   input(type="checkbox" v-model="show")
@@ -35,6 +39,7 @@
                   .control
                     button.button.is-primary.is-fullwidth(
                       :class="{'is-loading': loading}"
+                      :disabled="errors.any()"
                       @click="signin()"
                     ) {{ $t('create_account') }}
                 br
@@ -80,6 +85,9 @@ export default {
           this.loading = false;
         });
     },
+  },
+  mounted() {
+    this.$validator.validate();
   },
 };
 </script>

@@ -7,6 +7,7 @@
             .card
               .card-content
                 .title.is-4 {{ $t('sign_in') }}
+
                 .field
                   label.label {{ $t('email') }}
                   .control
@@ -14,27 +15,36 @@
                       v-model="payload.email"
                       type="email"
                       :placeholder="$t('email')"
+                      name="email"
+                      v-validate="'required|email'"
                     )
+
                 .field
                   label.label {{ $t('password') }}
                   .control
                     input.input(
-                        v-model="payload.password"
-                        :type="show ? 'text': 'password'"
-                        :placeholder="$t('password')"
+                      v-model="payload.password"
+                      :type="show ? 'text': 'password'"
+                      :placeholder="$t('password')"
+                      name="password"
+                      v-validate="'required'"
                     )
+
                 label.checkbox.noselect
                   input(type="checkbox" v-model="show")
                   |  {{ $t('show_password') }}
 
                 br
                 br
+
                 article.message.is-danger(v-if="error")
                   .message-body {{ $t(`error_code_${error.code}`) }}
+
                 .field
                   .control
                     button.button.is-primary.is-fullwidth(
                       :class="{'is-loading': loading}"
+                      :disabled="errors.any()"
                       @click="signin()"
                     ) {{ $t('sign_in') }}
                 br
@@ -70,6 +80,9 @@ export default {
         .catch((error) => { this.error = error; })
         .finally(() => { this.loading = false; });
     },
+  },
+  mounted() {
+    this.$validator.validate();
   },
 };
 </script>

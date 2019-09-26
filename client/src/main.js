@@ -5,6 +5,7 @@ import store from './store';
 import i18n from './i18n';
 import './registerServiceWorker';
 import './plugins/numerals';
+import './plugins/veevalidate';
 import './styles/app.scss';
 
 Vue.config.productionTip = false;
