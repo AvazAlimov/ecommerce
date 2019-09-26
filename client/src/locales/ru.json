@@ -1,0 +1,15 @@
+{
+  "categories": "Категории",
+  "products": "Продукты",
+  "all": "Все",
+  "add_to_basket": "Добавить в корзину",
+  "sum": "сум",
+  "basket": "Корзина",
+  "brands": "Бренды",
+  "sign_out": "Выход",
+  "my_orders": "Мои заказы",
+  "favourites": "Избранные",
+  "account_settings": "Настройки аккаунта",
+  "sign_in": "Войти",
+  "sign_up": "Зарегистрироваться"
+}

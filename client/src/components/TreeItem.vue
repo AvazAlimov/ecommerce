@@ -8,7 +8,7 @@
         .columns.is-mobile.is-vcentered
           .column(
             :class="{ 'has-text-weight-bold': expanded || selected == item.id }"
-          ) {{ item.names['ru'] }}
+          ) {{ item.name }}
           .column.is-narrow.has-text-right(v-if="item.children.length")
             span.icon.is-small.has-text-grey-light(v-show="expanded")
               i.fas.fa-chevron-down
@@ -17,7 +17,7 @@
     div(v-if="expanded")
       tree-item.has-background-light(
         v-if="item.children.length"
-        :item="{'id':item.id,'children':[],'names':{'ru':'Все','en':'All','uz':'Barchasi'}}"
+        :item="{'id':item.id,'children':[],'name': $t('all') }"
         :selected="selected"
       )
       template(v-for="(child, index) in item.children")

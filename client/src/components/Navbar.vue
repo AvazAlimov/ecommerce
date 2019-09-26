@@ -16,12 +16,12 @@
                     span(aria-hidden="true")
             #navMenu.navbar-menu(:class="{ 'is-active' : showNav }")
                 .navbar-start
-                    a.navbar-item Categories
-                    a.navbar-item Brands
+                    a.navbar-item {{ $t('categories') }}
+                    a.navbar-item {{ $t('brands') }}
                     .navbar-item
                         .buttons
                             a.button.is-primary
-                                strong Basket
+                                strong {{ $t('basket') }}
                                 span.icon
                                     i.fas.fa-shopping-basket
                 .navbar-end
@@ -31,16 +31,16 @@
                     .navbar-item(v-if="!user")
                         .buttons
                             a.button.is-primary
-                                strong Sign up
-                            a.button.is-light Log in
+                                strong {{ $t('sign_up') }}
+                            a.button.is-light {{ $t('sign_in') }}
                     .navbar-item.has-dropdown.is-hoverable(v-else)
                         a.navbar-link {{ user.email }}
                         .navbar-dropdown.is-right
-                            a.navbar-item Profile
-                            a.navbar-item Favourites
-                            a.navbar-item Orders
+                            a.navbar-item {{ $t('account_settings') }}
+                            a.navbar-item {{ $t('favourites') }}
+                            a.navbar-item {{ $t('my_orders') }}
                             hr.navbar-divider
-                            a.navbar-item Sign out
+                            a.navbar-item {{ $t('sign_out') }}
 </template>
 <script>
 import { mapState } from 'vuex';

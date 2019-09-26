@@ -4,10 +4,10 @@ section.hero.is-fullheight
     .container(style="padding-top: 1.5em; padding-bottom: 1.5em;")
       .columns
         .column.is-one-third
-          .title.is-4 Categories
+          .title.is-4 {{ $t('categories') }}
           ec-tree(:items="categories" v-model="categoryId")
         .column
-          .title.is-4 Products
+          .title.is-4 {{ $t('products') }}
           feathers-vuex-find(service="products" :query="{ categoryId }" watch="query.categoryId")
             template(slot-scope="{ items, isFindPending, pagination }")
               .columns.is-gapless
@@ -36,8 +36,7 @@ export default {
       const categories = this.findCategoriesInStore().data
         .map(item => ({
           id: item.id,
-          name: item.name,
-          names: item.names,
+          name: item.names[this.$i18n.locale],
           parentId: item.parentId,
           children: [],
         }));
@@ -64,17 +63,3 @@ export default {
   },
 };
 </script>
-<style lang="stylus">
-.child
-  padding-left 10px
-.item
-  padding 1em
-.item-image
-  min-height 192px
-  max-height 192px
-  object-fit scale-down
-.name
-  white-space: nowrap
-  text-overflow: ellipsis
-  overflow: hidden
-</style>

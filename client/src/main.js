@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-// import 'bulma/css/bulma.css';
+import i18n from './i18n';
 import './registerServiceWorker';
 import './plugins/numerals';
 import './styles/app.scss';
@@ -22,5 +22,6 @@ router.beforeEach((to, from, next) => {
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App),
 }).$mount('#app');
