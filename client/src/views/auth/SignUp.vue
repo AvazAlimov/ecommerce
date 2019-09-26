@@ -6,7 +6,7 @@
           .column.is-one-third.is-offset-one-third
             .card
               .card-content
-                .title.is-4 {{ $t('sign_in') }}
+                .title.is-4 {{ $t('create_account') }}
                 .field
                   label.label {{ $t('email') }}
                   .control
@@ -26,21 +26,22 @@
                 label.checkbox.noselect
                   input(type="checkbox" v-model="show")
                   |  {{ $t('show_password') }}
-
                 br
                 br
                 article.message.is-danger(v-if="error")
-                  .message-body {{ $t(`error_code_${error.code}`) }}
+                  .message-body {{ error }}
+                  //- .message-body {{ $t(`error_code_${error.code}`) }}
                 .field
                   .control
                     button.button.is-primary.is-fullwidth(
                       :class="{'is-loading': loading}"
                       @click="signin()"
-                    ) {{ $t('sign_in') }}
+                    ) {{ $t('create_account') }}
                 br
                 .has-text-centered
-                  p.is-4 {{ $t('no_account') }}
-                    router-link.is-link(:to="{ name: 'signup' }")  {{ $t('create_account') }}
+                  p.is-4 {{ $t('have_account') }}
+                    router-link.is-link(:to="{ name: 'signin' }")  {{ $t('sign_in') }}
+
 </template>
 <script>
 import { mapState } from 'vuex';
@@ -65,10 +66,19 @@ export default {
       this.error = null;
       this.loading = true;
       this.$store
-        .dispatch('auth/authenticate', this.payload)
-        .then(() => this.$router.push({ name: 'home' }))
-        .catch((error) => { this.error = error; })
-        .finally(() => { this.loading = false; });
+        .dispatch('users/create', this.payload)
+        .then(() => {
+          this.loading = true;
+          this.$store
+            .dispatch('auth/authenticate', this.payload)
+            .then(() => this.$router.push({ name: 'home' }))
+            .catch((error) => { this.error = error; })
+            .finally(() => { this.loading = false; });
+        })
+        .catch((error) => {
+          this.error = error;
+          this.loading = false;
+        });
     },
   },
 };

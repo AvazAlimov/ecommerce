@@ -30,9 +30,13 @@
                     //-         input.input.is-rounded(type="text" placeholder="Rounded input")
                     .navbar-item(v-if="!user")
                         .buttons
-                            a.button.is-primary
-                                strong {{ $t('sign_up') }}
-                            a.button.is-light {{ $t('sign_in') }}
+                            router-link.button.is-primary(
+                              :to="{ name: 'signup' }"
+                            ) {{ $t('sign_up') }}
+
+                            router-link.button.is-light(
+                              :to="{ name: 'signin' }"
+                            ) {{ $t('sign_in') }}
                     .navbar-item.has-dropdown.is-hoverable(v-else)
                         a.navbar-link {{ user.email }}
                         .navbar-dropdown.is-right
@@ -40,7 +44,7 @@
                             a.navbar-item {{ $t('favourites') }}
                             a.navbar-item {{ $t('my_orders') }}
                             hr.navbar-divider
-                            a.navbar-item {{ $t('sign_out') }}
+                            a.navbar-item(@click="signout()") {{ $t('sign_out') }}
 </template>
 <script>
 import { mapState } from 'vuex';
@@ -52,6 +56,13 @@ export default {
   }),
   computed: {
     ...mapState('auth', ['user']),
+  },
+  methods: {
+    signout() {
+      this.$store
+        .dispatch('auth/logout')
+        .then(() => this.$router.push({ name: 'home' }));
+    },
   },
   created() {
     this.$store.dispatch('auth/authenticate');

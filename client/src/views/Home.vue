@@ -1,18 +1,24 @@
 <template lang="pug">
-section.hero.is-fullheight
-  .hero-head
-    .container(style="padding-top: 1.5em; padding-bottom: 1.5em;")
-      .columns
-        .column.is-one-third
-          .title.is-4 {{ $t('categories') }}
-          ec-tree(:items="categories" v-model="categoryId")
-        .column
-          .title.is-4 {{ $t('products') }}
-          feathers-vuex-find(service="products" :query="{ categoryId }" watch="query.categoryId")
-            template(slot-scope="{ items, isFindPending, pagination }")
-              .columns.is-gapless
-                .column.is-one-quarter(v-for="(item, index) in items" :key="index")
-                  ec-item(:item="item")
+  section.hero.is-fullheight
+    .hero-head
+      .container(style="padding-top: 1.5em; padding-bottom: 1.5em;")
+        .columns
+          .column.is-one-third
+            .title.is-4 {{ $t('categories') }}
+            ec-tree(:items="categories" v-model="categoryId")
+          .column
+            .title.is-4 {{ $t('products') }}
+            feathers-vuex-find(service="products" :query="{ categoryId }" watch="query.categoryId")
+              template(slot-scope="{ items, isFindPending, pagination }")
+                .columns.is-gapless
+                  .column.is-one-quarter(v-for="(item, index) in items" :key="index")
+                    ec-item(:item="item")
+      //- .modal.is-active
+      //-   .modal-background
+      //-   .modal-card
+      //-     section.modal-card-body
+      //-       h1 Sign in
+      //-   button.modal-close.is-large(aria-label="close")
 </template>
 
 <script>

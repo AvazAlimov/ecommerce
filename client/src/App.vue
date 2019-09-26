@@ -1,5 +1,5 @@
 <template lang="pug">
-    #app
+    #app.has-background-white-ter
       ec-navbar
       .has-background-white-bis
         router-view
@@ -19,3 +19,9 @@ export default {
   },
 };
 </script>
+<style lang="stylus">
+body
+  height 100vh
+#app
+  height 100%
+</style>
