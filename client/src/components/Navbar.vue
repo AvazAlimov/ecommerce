@@ -2,7 +2,8 @@
     nav.navbar.is-spaced(role="navigation" aria-label="main navigation")
             .navbar-brand
                 a.navbar-item(href="/")
-                    img(src="https://bulma.io/images/bulma-logo.png" width="112" height="28")
+                  //- https://bulma.io/images/bulma-logo.png
+                  img(:src="require('@/assets/logo.svg')")
                 a.navbar-burger.burger(
                     @click="showNav = !showNav"
                     :class="{ 'is-active' : showNav }"
