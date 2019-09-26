@@ -1,7 +1,8 @@
 <template lang="pug">
     #app
       ec-navbar
-      router-view
+      .has-background-white-bis
+        router-view
       ec-footer
 </template>
 <script>

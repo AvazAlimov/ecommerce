@@ -10,10 +10,17 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@feathersjs/authentication-client": "^1.0.11",
+    "@feathersjs/feathers": "^3.3.1",
+    "@feathersjs/socketio-client": "^1.2.1",
     "bulma": "^0.7.5",
     "core-js": "^2.6.5",
+    "feathers-vuex": "^1.7.0",
+    "numeral": ">=2",
     "register-service-worker": "^1.6.2",
+    "socket.io-client": "^2.2.0",
     "vue": "^2.6.10",
+    "vue-numerals": "^3.0.4",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
   },
@@ -30,10 +37,12 @@
     "chai": "^4.1.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.12.0",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0",
+    "sass-loader": "^8.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-template-compiler": "^2.6.10",
-    "pug": "^2.0.4",
-    "pug-plain-loader": "^1.0.0"
+    "vue-template-compiler": "^2.6.10"
   }
 }
