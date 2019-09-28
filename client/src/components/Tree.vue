@@ -1,7 +1,11 @@
 <template lang="pug">
   nav.panel.has-background-white
     template(v-for="(item, index) in items")
-      tree-item(:item="item" :key="index" :selected="value")
+      tree-item(
+        :item="item"
+        :key="index"
+        :selected="value"
+        :level="0")
 </template>
 
 <script>

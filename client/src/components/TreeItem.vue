@@ -1,6 +1,7 @@
 <template lang="pug">
   .noselect
     a.panel-block(
+      :style="`padding-left: ${level * 1.5 + 1}em`"
       :class="{'has-background-white-ter': expanded, 'has-text-primary': selected == item.id}"
       @click="expand()"
     )
@@ -19,9 +20,15 @@
         v-if="item.children.length"
         :item="{'id':item.id,'children':[],'name': $t('all') }"
         :selected="selected"
+        :level="level + 1"
       )
       template(v-for="(child, index) in item.children")
-        tree-item.has-background-light(:item="child" :key="index" :selected="selected")
+        tree-item.has-background-light(
+          :item="child"
+          :key="index"
+          :selected="selected"
+          :level="level + 1"
+        )
 </template>
 <script>
 // eslint-disable-next-line import/no-self-import
@@ -41,6 +48,10 @@ export default {
       required: true,
     },
     selected: {
+      required: true,
+    },
+    level: {
+      type: Number,
       required: true,
     },
   },

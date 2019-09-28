@@ -11,14 +11,10 @@
             feathers-vuex-find(service="products" :query="{ categoryId }" watch="query.categoryId")
               template(slot-scope="{ items, isFindPending, pagination }")
                 .columns.is-gapless
-                  .column.is-one-quarter(v-for="(item, index) in items" :key="index")
+                  .column.is-one-quarter-desktop.is-half-tablet(
+                    v-for="(item, index) in items" :key="index"
+                  )
                     ec-item(:item="item")
-      //- .modal.is-active
-      //-   .modal-background
-      //-   .modal-card
-      //-     section.modal-card-body
-      //-       h1 Sign in
-      //-   button.modal-close.is-large(aria-label="close")
 </template>
 
 <script>
