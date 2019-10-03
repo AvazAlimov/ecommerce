@@ -11,7 +11,7 @@
             feathers-vuex-find(service="products" :query="{ categoryId }" watch="query.categoryId")
               template(slot-scope="{ items, isFindPending, pagination }")
                 .columns.is-gapless
-                  .column.is-one-quarter-desktop.is-half-tablet(
+                  .column.is-one-third-desktop.is-half-tablet(
                     v-for="(item, index) in items" :key="index"
                   )
                     ec-item(:item="item")

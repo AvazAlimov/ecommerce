@@ -10,6 +10,8 @@
           .column(
             :class="{ 'has-text-weight-bold': expanded || selected == item.id }"
           ) {{ item.name }}
+          .column.is-narrow.has-text-right
+            span.icon.is-small.has-text-grey-light {{ item.count }}
           .column.is-narrow.has-text-right(v-if="item.children.length")
             span.icon.is-small.has-text-grey-light(v-show="expanded")
               i.fas.fa-chevron-down
