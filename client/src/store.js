@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import feathersVuex from 'feathers-vuex';
 import feathersClient from './plugins/feathers';
 import basket from './store/basket';
+import saved from './store/saved';
 
 const { service, auth, FeathersVuex } = feathersVuex(feathersClient, { idField: 'id', enableEvents: true });
 
@@ -12,6 +13,7 @@ Vue.use(FeathersVuex);
 export default new Vuex.Store({
   modules: {
     basket,
+    saved,
   },
   plugins: [
     service('users'),

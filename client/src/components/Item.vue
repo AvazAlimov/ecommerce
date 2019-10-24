@@ -1,17 +1,18 @@
 <template lang="pug">
   .card.item
-    figure.image(v-if="item.photos.length")
-      img.item-image(:src="item.photos[0].path + item.photos[0].thumbnail")
-    figure.image(v-else)
-      img.item-image(:src="require('@/assets/empty.jpg')")
-    br
-    .is-size-6.has-text-dark.name {{ item.names[$i18n.locale] }}
-    br
-    .is-size-6(v-if="item.prices.length")
-      .has-text-grey-dark
-        strong {{ item.prices[0].value | numeralFormat }}
-        |  {{ $t('sum') }}
-    .is-size-6(v-else) {{ $t('price_not_available') }}
+    router-link(:to="{ name: 'product', params: { id: item.id } }")
+      figure.image(v-if="item.photos.length")
+        img.item-image(:src="item.photos[0].path + item.photos[0].thumbnail")
+      figure.image(v-else)
+        img.item-image(:src="require('@/assets/empty.jpg')")
+      br
+      .is-size-6.has-text-dark.name {{ item.names[$i18n.locale] }}
+      br
+      .is-size-6(v-if="item.prices.length")
+        .has-text-grey-dark
+          strong {{ item.prices[0].value | numeralFormat }}
+          |  {{ $t('sum') }}
+      .is-size-6(v-else) {{ $t('price_not_available') }}
     br
     .buttons.has-addons.is-centered(v-if="isIncluded")
       button.button.is-primary(@click="decrement(index)") -1
