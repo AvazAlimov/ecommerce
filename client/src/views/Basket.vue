@@ -37,6 +37,14 @@
                   td
                   td
                   td {{ totalPrice | numeralFormat }} {{ $t('sum') }}
+            div(v-if="user")
+              p {{ $t('checkout_description') }}
+              br
+              button.button.is-primary(@click="checkout") {{ $t('checkout') }}
+            div(v-else)
+              p {{ $t('need_signed') }}
+              br
+              button.button.is-primary(@click="signin") {{ $t('sign_in') }}
 
 </template>
 <script>
@@ -45,6 +53,7 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   name: 'Basket',
   computed: {
+    ...mapState('auth', ['user']),
     ...mapState('basket', ['items']),
     totalPrice() {
       let price = 0;
@@ -61,6 +70,12 @@ export default {
         return item.prices[0].value;
       }
       return 0;
+    },
+    signin() {
+      this.$router.push({ name: 'signin' });
+    },
+    checkout() {
+
     },
   },
 };

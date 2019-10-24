@@ -28,8 +28,10 @@
               button.button.is-primary(@click="decrement(index)") -1
               span.button(disabled) {{ quantity }} {{ $t('pcs') }}
               button.button.is-primary(@click="increment(index)") +1
-            button.button(v-else @click="add(product)") {{ $t('add_to_basket') }}
-
+            .buttons(v-else)
+              button.button(
+                v-if="product.prices.length"
+                @click="add(product)") {{ $t('add_to_basket') }}
             button.button.is-warning(@click="save" v-if="isSaved")
               span {{ $t('favourite') }}
               span.icon.is-small
