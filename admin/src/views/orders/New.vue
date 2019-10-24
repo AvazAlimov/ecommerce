@@ -54,9 +54,15 @@
             v-btn.ml-3(
               :loading="loading"
               :disabled="errors.items.length > 0 || !user"
-              @click="submit()"
+              @click="submitPayme()"
               outlined
-            ) Подтвердить
+            ) Подтвердить (Payme)
+            v-btn.ml-3(
+              :loading="loading"
+              :disabled="errors.items.length > 0 || !user"
+              @click="submitClick()"
+              outlined
+            ) Подтвердить (Click)
 </template>
 <script>
 import { mapActions } from 'vuex';
@@ -97,7 +103,31 @@ export default {
       }
       this.$refs.procutsSearch.setValue(null);
     },
-    submit() {
+    submitClick() {
+      this.loading = true;
+      this.create({
+        clientId: this.user.id,
+        items: this.items,
+        price: this.totalPrice,
+      })
+        .then((order) => {
+          const url = `https://my.click.uz/services/pay?service_id=${
+            14492
+          }&merchant_id=${
+            9879
+          }&amount=${
+            order.price
+          }&transaction_param=${
+            order.id
+          }&return_url=${
+            'http://46.8.35.24'
+          }&card_type=uzcard`;
+          window.location.replace(url);
+        })
+        .catch(console.error)
+        .finally(() => { this.loading = false; });
+    },
+    submitPayme() {
       this.loading = true;
       this.create({
         clientId: this.user.id,
