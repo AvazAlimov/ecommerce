@@ -6,6 +6,7 @@ const complete = require('./complete');
 
 module.exports = app => {
   router.post('/', (req, res) => {
+    console.log(req);
     const { action } = req.params;
     switch(action) {
     case 0:
