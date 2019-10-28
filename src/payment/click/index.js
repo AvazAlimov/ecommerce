@@ -6,13 +6,12 @@ const complete = require('./complete');
 
 module.exports = app => {
   router.post('/', (req, res) => {
-    console.log(req);
-    const { action } = req.params;
+    const { action } = req.query;
     switch(action) {
-    case 0:
+    case '0':
       prepare(app, req, res);
       break;
-    case 1:
+    case '1':
       complete(app, req, res);
       break;
     default:
