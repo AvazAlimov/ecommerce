@@ -20,7 +20,7 @@ const authentication = require('./authentication');
 
 const sequelize = require('./sequelize');
 
-const initPayment = require('./payment/payme');
+const initPayment = require('./payment');
 
 const app = express(feathers());
 
