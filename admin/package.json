@@ -30,7 +30,7 @@
     "vue2-editor": "^2.10.0",
     "vuetify": "^2.0.0",
     "vuex": "^3.0.1",
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.3.0",
